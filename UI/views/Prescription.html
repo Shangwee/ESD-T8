@@ -95,7 +95,7 @@
     <!-- Custom styles for this template -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.min.css" rel="stylesheet"/>
     <!-- Custom styles for this template -->
-    <link href="../../css/dashboard.css" rel="stylesheet" />
+    <link href="../css/dashboard.css" rel="stylesheet" />
   </head>
 
   <body>
@@ -286,9 +286,27 @@
         <!-- Start of Main page -->
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
           <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2">Page name placeholder</h1>
+            <h1 class="h2">Prescription Form</h1>
           </div>
-          
+          <form>
+            <div class="mb-3">
+              <label for="patientName" class="form-label">Patient Name</label>
+              <input type="text" class="form-control" id="patientName" placeholder="Enter patient's name">
+            </div>
+            <div class="mb-3">
+              <label for="medication" class="form-label">Medication</label>
+              <input type="text" class="form-control" id="medication" placeholder="Enter prescribed medication">
+            </div>
+            <div class="mb-3">
+              <label for="dosage" class="form-label">Dosage</label>
+              <input type="text" class="form-control" id="dosage" placeholder="Enter dosage information">
+            </div>
+            <div class="mb-3">
+              <label for="instructions" class="form-label">Instructions</label>
+              <textarea class="form-control" id="instructions" rows="3" placeholder="Enter prescription instructions"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
         </main>
         <!-- end of Mainpage -->
       </div>
