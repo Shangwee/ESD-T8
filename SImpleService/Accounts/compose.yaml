@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+
+  #################################
+  # Account: The Account microservice
+  #################################
+  account:
+    build: ./account
+    image: mondo/account:1.0
+    # container_name: account_microservice
+    restart: always
+    ports: [5001:5000]
+    depends_on:
+      - account_db
+    environment:
+      dbURL: mysql+mysqlconnector://root@host.docker.internal:3301/accountdb
+
+
+  #################################
+  # Account SQL Database
+  #################################
+  account_db:
+    image: mysql:latest
+    restart: always
+    ports: [3301:3306]
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: yes
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d/:ro
+      - ./db-data:/var/lib/mysql:rw
