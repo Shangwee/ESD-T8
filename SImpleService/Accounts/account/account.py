@@ -5,7 +5,7 @@ from os import environ
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL')
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/account'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/accountdb'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -18,16 +18,18 @@ class Account(db.Model):
     email = db.Column(db.String(64), nullable=False)
     password = db.Column(db.String(64), nullable=False)
     role = db.Column(db.Integer)
+    allergies = db.Column(db.JSON, nullable=True)
 
-    def __init__(self, id, name, email, password, role):
+    def __init__(self, id, name, email, password, role, allergies):
         self.id = id
         self.name = name
         self.email = email
         self.password = password
         self.role = role
+        self.allergies = allergies
 
     def json(self):
-        return {"id": self.id, "name": self.name, "email": self.email, "password": self.password, "role": self.role}
+        return {"id": self.id, "name": self.name, "email": self.email, "password": self.password, "role": self.role, "allergies": self.allergies}
 
 @app.route("/account")
 def get_all():
@@ -71,6 +73,51 @@ def get_account_by_id(id):
         }
     ), 404
 
+# update allergies
+@app.route("/account/update", methods=['PUT'])
+def update_allergies():
+
+    data = request.get_json()
+    id = data["id"]
+    allergies = data["allergies"]
+
+    account = db.session.scalars(
+    	db.select(Account).filter_by(id=int(id)).
+    	limit(1)
+    ).first()
+
+  
+
+    if account.allergies == None:
+        account_allergies = []
+    else: account_allergies = account.allergies
+
+    
+    account.allergies = account_allergies + allergies
+
+    # return jsonify({
+    #     "data": allergies,
+    #     "account": account_allergies,
+    #     "concatenate": account_allergies + allergies
+    # })
+
+    try:
+        db.session.commit()
+    except:
+        return jsonify(
+            {
+                "code": 500,
+                "data": data,
+                "message": "An error occurred creating the book."
+            }
+        ), 500
+
+    return jsonify(
+        {
+            "code": 201,
+            "data": account.json()
+        }
+    ), 201
 
 @app.route("/login", methods=['POST'])
 def login():
