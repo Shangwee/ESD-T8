@@ -5,10 +5,12 @@ DB starts (3300)
 - account 3301
 - inventory 3302
 - patientrecord 3303
+
 simple service start (5000)
 - account 5001
 - inventory 5002
 - patientrecord 5003
+
 complex service (6000)
 - 
 
