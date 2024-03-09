@@ -17,14 +17,13 @@ class Inventory(db.Model):
     __tablename__ = 'inventory'
 
 
-    inventoryID = db.Column(db.Integer, primary_key=True)
+    inventoryID = db.Column(db.Integer,autoincrement=True, primary_key=True, nullable=True)
     medicine = db.Column(db.String(64), nullable=False)
     price = db.Column(db.Float(precision=2), nullable=False)
     quantity = db.Column(db.Integer)
 
 
-    def __init__(self, inventoryID, medicine, price, quantity):
-        self.inventoryID = inventoryID
+    def __init__(self, medicine, price, quantity):
         self.medicine = medicine
         self.price = price
         self.quantity = quantity
@@ -50,7 +49,6 @@ def get_all():
         {
             "code": 404,
             "message": "There are no inventories.",
-            "sql": inventorylist
         }
     ), 404
 
@@ -78,25 +76,10 @@ def find_by_inventoryID(inventoryID):
 
 
 
-@app.route("/inventory/<int:inventoryID>", methods=['POST'])
-def create_inventory(inventoryID):
-    if (db.session.scalars(
-      db.select(Inventory).filter_by(inventoryID = int(inventoryID)).
-      limit(1)
-      ).first()
-      ):
-        return jsonify(
-            {
-                "code": 400,
-                "data": {
-                    "inventoryID": inventoryID
-                },
-                "message": "Inventory already exists."
-            }
-        ), 400
-    
+@app.route("/inventory/", methods=['POST'])
+def create_inventory():    
     data = request.get_json()
-    inventory = inventory(inventoryID, **data)
+    inventory = Inventory( **data)
 
     try:
         db.session.add(inventory)
@@ -105,9 +88,7 @@ def create_inventory(inventoryID):
         return jsonify(
             {
                 "code": 500,
-                "data": {
-                    "inventoryID": inventoryID
-                },
+                "data": data,
                 "message": "An error occurred creating the inventory."
             }
         ), 500

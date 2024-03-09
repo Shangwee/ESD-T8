@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+
+
+#################################
+# prescription: The prescription microservice
+#################################
+
+
+  prescription:
+    build:
+      context: ./prescription
+      dockerfile: Dockerfile
+    image: ESDT8/prescription:1.0
+    restart: always
+    ports:
+      - "5004:5000"
+    environment:
+      dbURL: mysql+mysqlconnector://root@host.docker.internal:3304/prescription
+
+#################################
+# Database: The Database
+#################################
+
+  db:
+    image: mysql:latest
+    restart: always
+    ports:
+      - "3304:3306"
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: yes  
+      MYSQL_DATABASE: prescription
+    volumes:
+     - ./db/prescription.sql:/docker-entrypoint-initdb.d/init.sql
+

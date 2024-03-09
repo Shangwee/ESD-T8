@@ -4,13 +4,22 @@
 DB starts (3300)
 - account 3301
 - inventory 3302
-simple service start (5000)
+- patients record 3303
+- prescription 3304
+
+Simple service (5000)
 - account 5001
 - inventory 5002
-complex service (6000)
-- 
+- patients record 5003
+- prescription 5004
 
-### note
-make sure to add from 
-from flask_cors import CORS and CORS(app) if not update will not work
+Complex service (6000)
+- CreateMC 6001
+- CreatePayment 6002
+- CreatePresciption 6003
+
+### Note
+
+Make sure to include the following in all the microservice:
+- ```from flask_cors import CORS``` and ```CORS(app)``` 
 
