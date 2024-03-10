@@ -6,12 +6,14 @@ DB starts (3300)
 - inventory 3302
 - patients record 3303
 - prescription 3304
+- dispenser ----
 
 Simple service (5000)
 - account 5001
 - inventory 5002
 - patients record 5003
 - prescription 5004
+- dispenser 5005
 
 Complex service (6000)
 - CreateMC 6001
