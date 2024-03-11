@@ -1,5 +1,0 @@
-### CreateMC microservice 
-
-*Details*
-
-*instructions*
