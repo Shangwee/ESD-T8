@@ -14,3 +14,17 @@ quantity (Int)
 *instructions*
 1. do to the inventory folder
 2. run the following command "docker-compose -f ./docker-compose.yaml up "
+
+```/inventory```
+1.method: GET
+    details: retrieve all the inventory
+2. method: POST
+    details: Create new inventory
+
+```/inventory/<int:inventoryID>```
+1. method: GET
+    get specific inventory
+
+```/inventory/<int:inventoryID>```
+1. method: PUT
+    update specific inventory
