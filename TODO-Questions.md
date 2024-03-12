@@ -6,3 +6,10 @@ Inventory Simple Microservice:
         if prescribe < inventory: can just deduct
         if prescribe > inventory: deduct the remaining inventory to 0
             the remaining amount will also affect the invoice portion
+
+Prescription Simple Microservice:
+- for sql, should medicine data-type be VARCHAR(255)[] instead? since there can be more than 1 med prescribed
+    - or store as a dictonary (JSON format) which contains the other prescription information if you wanna include in
+
+Others:
+- probably can standardise naming convention throughout (e.g. patientID vs patient_id)
