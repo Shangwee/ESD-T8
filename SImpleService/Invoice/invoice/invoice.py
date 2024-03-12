@@ -18,7 +18,7 @@ class Invoice(db.Model):
     invoice_id = db.Column(db.Integer, autoincrement=True, primary_key=True, nullable=True)
     patient_id = db.Column(db.Integer, nullable=False)
     medicine = db.Column(db.String(64), nullable=False)
-    total_price = db.Column(db.Float, nullable=False)
+    total_price = db.Column(db.Float(precision=2), nullable=False)
     payment_status = db.Column(db.Integer, nullable=False)
 
     def __init__(self, patient_id, medicine, total_price, payment_status):
@@ -52,7 +52,7 @@ def get_all():
 @app.route("/invoice/<int:patient_id>")
 def get_invoice_by_patientID(patient_id):
     invoice_by_patient = db.session.scalars(
-        db.select(Invoice).filter_by(patient_id = int(patient_id), payment_status = 0)
+        db.select(Invoice).filter_by(patient_id = int(patient_id))
     ).all()
     if len(invoice_by_patient):
         return jsonify(

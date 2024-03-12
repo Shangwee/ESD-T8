@@ -15,7 +15,7 @@ services:
     ports:
       - "5007:5000"
     environment:
-      dbURL: mysql+mysqlconnector://root@host.docker.internal:3306/invoice
+      dbURL: mysql+mysqlconnector://root@host.docker.internal:3307/invoice
 
 #################################
 # Database: The Database
