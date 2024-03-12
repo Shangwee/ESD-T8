@@ -45,7 +45,28 @@ def processCreatePrescription(prescription):
       # 2. check if doctor id is valid
       # Invoke the account microservice
       print('\n-----Invoking account microservice-----')
-      print(prescription)
+      prescript = prescription['params']
+      doctorID = prescript["doctorID"]
+      account_result = invoke_http(account_URL + "/" + str(doctorID), method='GET')
+      print('account_result:', account_result)
+
+      code = account_result["code"]
+      if code not in range(200,300):
+            return {
+                  code: 500,
+                  "data": {"account_result": account_result},
+                  "message": "Doctor ID not found"
+            }
+      
+      # 3. check get paitent allegry 
+      # invoke the account microservice
+
+      # 4. Record new prescription
+      # invoke the prescription microservice
+
+      # 5. send prescription ID to AMQP broker
+
+
 
 # Execute this program if it is run as a main script (not by 'import')
 if __name__ == "__main__":

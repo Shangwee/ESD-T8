@@ -258,75 +258,72 @@
         <!-- end of NavBar -->
 
         <!-- Start of Main page -->
-        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-          <div
-            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <div class="col-md-5 ms-sm-auto col-lg-5 col-sm-12 px-md-4">
+          <div class="row mt-4">
+            <div class="col-md-12"> 
+                <h1 class="h2">Available Medicine</h1>
+                <hr>
+                <div class="my-3">
+                </div>
+                <ul class="list-group">
+                    <li class="list-group-item d-flex justify-content-between align-items-center" v-for="(item, index) in inventory">
+                        <div>
+                            <span class="item-name">{{item.inventoryID}}. </span>
+                            <span class="item-name">{{item.medicine}}</span>
+                            <span class="badge bg-info rounded-pill ms-2">Qty: {{item.quantity}}</span>
+                        </div>
+                        <div>
+                            <button class="btn btn-primary btn-sm edit-item mx-1" @click="addPrescription(item.inventoryID, item.medicine)">add</button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+          </div>
+        </div>
+
+        <main class="col-md-4 ms-sm-auto col-lg-5 col-sm-12 px-md-4">
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2">Prescription Form</h1>
           </div>
+          <form>
             <div class="mb-3">
               <label for="doctorID" class="form-label">Doctor ID</label>
-              <input type="number" class="form-control" id="doctorID" v-model="doctorID" value="1">
+              <input required type="number" class="form-control" id="doctorID" v-model="doctorID" placeholder="Enter Doctor's ID" value="1" min="1" max="3">
             </div>
             <div class="mb-3">
               <label for="patientID" class="form-label">Patient ID</label>
-              <input type="number" class="form-control" id="patientID" v-model="patientID" placeholder="Enter patient's ID" min="4">
+              <input required type="number" class="form-control" id="patientID" v-model="patientID" placeholder="Enter Patient's ID" min="4">
             </div>
 
-            <button class="btn text-white mx-1" style='background-color:#0c1559' @click="displayAvailableInventoy()">check</button>
-            <button class="btn text-white mx-1" style='background-color:#0c1559' data-bs-toggle="modal" data-bs-target="#addPrescriptionModal">Add Prescription</button>
-
-            <div class="row mt-4">
+            <button class="btn text-white mx-1" style='background-color:#0c1559' @click="savePrescription()" >Save Prescription</button>
+          </form>
+          <div class="row mt-4">
               <div class="col-md-12"> 
                   <ul class="list-group">
                       <li class="list-group-item d-flex justify-content-between align-items-center"  v-for="(item, index) in prescriptions">
-                          <div>
-                              <span class="item-name">{{item.medicine}}</span>
-                              <span class="badge bg-secondary rounded-pill ms-2">{{item.instruction}}</span>
-                              <span class="badge bg-info rounded-pill ms-2">Qty: {{item.quantity}}</span>
+                          <div v-if="editlist.includes(item.medcineID)">
+                            <span class="item-name">{{item.medicineName}}</span>
+                            <div class="my-3">
+                              <input type="text" class="form-control" v-model="item.instruction" placeholder="Enter instruction here">
+                            </div>
+                            <div class="mb-3">
+                              <input type="number" class="form-control" v-model="item.quantity">
+                            </div>
+                          </div>
+                          <div v-else>
+                            <span class="item-name">{{item.medicineName}}</span>
+                            <span class="badge bg-secondary rounded-pill ms-2">{{item.instruction}}</span>
+                            <span class="badge bg-info rounded-pill ms-2">Qty: {{item.quantity}}</span>
                           </div>
                           <div>
-                              <button class="btn btn-primary btn-sm edit-item mx-1">Edit</button>
-                              <button class="btn btn-danger btn-sm delete-item mx-1" v-on:click="removePrescription(item.index)">Delete</button>
+                            <button v-if="editlist.includes(item.medcineID)" class="btn btn-success btn-sm edit-item mx-1" @click="saveMedicine(item)">Save</button>
+                            <button v-else class="btn btn-primary btn-sm edit-item mx-1" v-on:click="editMedicine(item)">Edit</button>
+                            <button class="btn btn-danger btn-sm delete-item mx-1" v-on:click="removePrescription(item.index)">Delete</button>
                           </div>
                       </li>
                   </ul>
               </div>
           </div>
-
-            <!-- Add Prescription Modal -->
-          <div class="modal fade" id="addPrescriptionModal" tabindex="-1" aria-labelledby="addPrescriptionModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="addPrescriptionModalLabel">Add Prescription</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                  <form>
-                    <div class="form-group">
-                      <div class="mb-3">
-                        <label for="medicine" class="form-label">Medication</label>
-                        <input type="text" class="form-control" id="medicine" v-model="medicine" placeholder="Enter prescribed medication">
-                      </div>
-                      <div class="mb-3">
-                        <label for="quantity" class="form-label">Quantity</label>
-                        <input type="number" class="form-control" id="quantity" v-model="quantity" min="1" max="100" placeholder="Enter quantity ammount">
-                      </div>
-                      <div class="mb-3">
-                        <label for="instructions" class="form-label">Instructions</label>
-                        <textarea class="form-control" id="instructions" rows="3" v-model="instruction" placeholder="Enter prescription instructions"></textarea>
-                      </div>
-                    </div>
-                  </form>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="addPrescription()">Add</button>
-                </div>
-              </div>
-            </div>
-          </div>
-
         </main>
         <!-- end of Mainpage -->
       </div>

@@ -16,5 +16,8 @@ table name: account
 /account/id (GET)
 /login (POST)
 
+Account will be doctor if role = 0
+Account will be patient if role = 1 
+
 *instructions*
 - in accounts root folder, run docker compose up
