@@ -70,27 +70,50 @@ def get_invoice_by_patientID(patient_id):
 
 @app.route("/invoice/", methods=['POST'])
 def create_invoice():
-    data = request.get_json()
-    invoice = Invoice(**data)
-
+    # data = request.get_json()
+    patient_id = request.json.get('patient_id', None)
+    medicine = request.json.get('medicine', None)
+    total_price = request.json.get('total_price', None)
+    payment_status = request.json.get('payment_status', None)
+    if patient_id == None or medicine == None or total_price == None or payment_status == None:
+          return jsonify(
+        {
+            "code": 400,
+            "message": "missing data, please check again "
+        }
+        ), 201
+    newInvoice = Invoice(patient_id=patient_id, medicine = medicine, total_price=total_price, payment_status=payment_status)
     try:
-        db.session.add(invoice)
+        db.session.add(newInvoice)
         db.session.commit()
-    except:
-        return jsonify(
+    except: 
+          return jsonify(
             {
                 "code": 500,
-                "data": data,
                 "message": "An error occurred creating the invoice."
             }
         ), 500
 
-    return jsonify(
-        {
-            "code": 201,
-            "data": invoice.json()
-        }
-    ), 201
+    # invoice = Invoice(**data)
+
+    # try:
+    #     db.session.add(invoice)
+    #     db.session.commit()
+    # except:
+    #     return jsonify(
+    #         {
+    #             "code": 500,
+    #             "data": data,
+    #             "message": "An error occurred creating the invoice."
+    #         }
+    #     ), 500
+
+    # return jsonify(
+    #     {
+    #         "code": 201,
+    #         "data": invoice.json()
+    #     }
+    # ), 201
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
