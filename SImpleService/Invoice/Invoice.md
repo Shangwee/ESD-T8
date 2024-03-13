@@ -1,8 +1,8 @@
 ### Invoice microservice 
 
 *Details*
-service port 5006
-db Port 3306
+service port 5007
+db Port 3307
 
 table name: invoice
 
