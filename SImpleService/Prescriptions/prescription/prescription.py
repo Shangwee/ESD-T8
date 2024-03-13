@@ -18,21 +18,19 @@ class Prescription(db.Model):
     prescriptionID = db.Column(db.Integer, autoincrement=True, primary_key=True, nullable=True)
     patientID = db.Column(db.Integer, nullable=False)
     doctorID = db.Column(db.Integer, nullable=False)
-    medicine = db.Column(db.String(64), nullable=False)
-    quantity = db.Column(db.Integer, nullable=False)
-    instructions = db.Column(db.Text, nullable=True)
+    medicine = db.Column(db.JSON, nullable=False)
     datetime = db.Column(db.DateTime(timezone=True), default=func.now())
 
-    def __init__(self, patientID, doctorID, medicine, quantity, instructions):
+    def __init__(self, patientID, doctorID, medicine):
         self.patientID = patientID
         self.doctorID = doctorID
         self.medicine = medicine
-        self.quantity = quantity
-        self.instructions = instructions
+
 
     def json(self):
-        return {"prescriptionID": self.prescriptionID, "patientID": self.patientID, "doctorID": self.doctorID, "medicine": self.medicine, "quantity": self.quantity,"instructions": self.instructions ,"date": self.datetime}
-    
+        return {"prescriptionID": self.prescriptionID, "patientID": self.patientID, "doctorID": self.doctorID, "medicine": self.medicine,"date": self.datetime}
+
+
 @app.route("/prescription")
 def get_all():
     prescriptionlist = db.session.scalars(db.select(Prescription)).all()

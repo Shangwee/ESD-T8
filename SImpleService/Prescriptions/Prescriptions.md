@@ -9,10 +9,15 @@ table name: prescription
 prescriptionID INT AUTO_INCREMENT PRIMARY KEY,
 patientID INT NOT NULL,
 doctorID INT NOT NULl,
-medicine VARCHAR(255) ,
-quantity INT NOT NULL,
-instructions TEXT,
-datetime DATETIME
+medicine JSON
+
+In medicine 
+each medcine include
+- medicineID
+- medicineName
+- quantity
+- instruction
+
 
 *instructions*
 1. do to the prescripton folder
