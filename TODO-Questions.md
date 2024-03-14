@@ -13,3 +13,23 @@ Prescription Simple Microservice:
 
 Others:
 - probably can standardise naming convention throughout (e.g. patientID vs patient_id)
+
+
+loop through prescription and get price from prescription, return a json object of {[medicine id, quantity, price]} - do it at simple inventory 
+Test data
+{
+    "InventorytoInvoice": [
+        {
+            "medicineID": 2,
+            "price": 20.0,
+            "quantity": 5
+        },
+        {
+            "medicineID": 4,
+            "price": 20.0,
+            "quantity": 2
+        }
+    ],
+    "code": 250
+}
+ 

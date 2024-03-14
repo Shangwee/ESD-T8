@@ -68,13 +68,37 @@ def get_invoice_by_patientID(patient_id):
         }
     ), 404
 
+## tabulation method TBC
+
+# @app.route("/invoice/<int:patient_id>")
+# def get_total_price(patient_id):
+#     invoice_by_patient = db.session.scalars(
+#         db.select(Invoice).filter_by(patient_id = int(patient_id))
+#     ).all()
+#     if len(invoice_by_patient):
+#         return jsonify(
+#             {
+#                 "code": 200,
+#                 "data": [invoice.json() for invoice in invoice_by_patient]
+#             }
+#         )
+#     return jsonify(
+#         {
+#             "code": 404,
+#             "message": "Invoice not found.",
+#         }
+#     ), 404
+
+
 @app.route("/invoice/", methods=['POST'])
 def create_invoice():
+    totalprice =0 
     # data = request.get_json() 
     # medicine * quantity -- use a loop 
     # if receive nothing for payment status, pass as 0  
     patient_id = request.json.get('patient_id', None)
     medicine = request.json.get('medicine', None)
+    
     total_price = request.json.get('total_price', None)
     # payment_status = request.json.get('payment_status', None) 
     if patient_id == None or medicine == None or total_price == None:
@@ -96,26 +120,18 @@ def create_invoice():
             }
         ), 500
 
-    # invoice = Invoice(**data)
-
-    # try:
-    #     db.session.add(invoice)
-    #     db.session.commit()
-    # except:
-    #     return jsonify(
-    #         {
-    #             "code": 500,
-    #             "data": data,
-    #             "message": "An error occurred creating the invoice."
-    #         }
-    #     ), 500
-
-    # return jsonify(
-    #     {
-    #         "code": 201,
-    #         "data": invoice.json()
-    #     }
-    # ), 201
+# {
+#     "prescriptionID": self.prescriptionID,
+#     "patientID": self.patientID,
+#     "doctorID": self.doctorID,
+#     "medicine": self.medicine,
+#     "process": self.process,
+#     "date": self.datetime
+# } prescription returns this 
+    
+# need to retrieve medicine price * quantity 
+#   (4, 1, '[{"medcineID": 2, "medicineName": "CoughMedicine 2", "quantity": 5, "instruction": "Twice daily"}, {"medcineID": 4,"medicineName": "FluMedicine 1", "quantity": 2, "instruction": "As needed"}]', '2024-03-12 10:00:00'),
+ 
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
