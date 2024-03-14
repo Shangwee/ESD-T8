@@ -19,6 +19,7 @@ class Prescription(db.Model):
     patientID = db.Column(db.Integer, nullable=False)
     doctorID = db.Column(db.Integer, nullable=False)
     medicine = db.Column(db.JSON, nullable=False)
+    process = db.Column(db.Boolean, default=False)
     datetime = db.Column(db.DateTime(timezone=True), default=func.now())
 
     def __init__(self, patientID, doctorID, medicine):
@@ -26,9 +27,8 @@ class Prescription(db.Model):
         self.doctorID = doctorID
         self.medicine = medicine
 
-
     def json(self):
-        return {"prescriptionID": self.prescriptionID, "patientID": self.patientID, "doctorID": self.doctorID, "medicine": self.medicine,"date": self.datetime}
+        return {"prescriptionID": self.prescriptionID, "patientID": self.patientID, "doctorID": self.doctorID, "medicine": self.medicine, "process":self.process, "date": self.datetime}
 
 
 @app.route("/prescription")
@@ -50,7 +50,7 @@ def get_all():
         }
     ), 404
 
-@app.route("/prescription/", methods=['POST'])
+@app.route("/prescription", methods=['POST'])
 def create_prescription():
     data = request.get_json()
     prescription = Prescription(**data)

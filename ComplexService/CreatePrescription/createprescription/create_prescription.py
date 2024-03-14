@@ -7,8 +7,10 @@ app = Flask(__name__)
 CORS(app)
 
 account_URL = "http://localhost:5001/account"
+inventory_URL = "http://localhost:5002/inventory"
 patient_record_URL = "http://localhost:5003/record"
 prescription_URL = "http://localhost:5004/prescription"
+
 
 
 @app.route("/create_prescription", methods=['POST'])
@@ -42,31 +44,32 @@ def create_prescription():
       }), 400
 
 def processCreatePrescription(prescription):
-      # 2. check if doctor id is valid
-      # Invoke the account microservice
-      print('\n-----Invoking account microservice-----')
-      prescript = prescription['params']
-      doctorID = prescript["doctorID"]
-      account_result = invoke_http(account_URL + "/" + str(doctorID), method='GET')
-      print('account_result:', account_result)
+      # 2. check allergies
+      # invoke the account microservice
 
-      code = account_result["code"]
+      # 3. Record new prescription
+      # invoke the prescription microservice
+      print('\n-----Invoking prescription microservice-----')
+      prescription_result = invoke_http(prescription_URL, method='POST', json=prescription)
+      print('prescription_result:', prescription_result)
+
+      code = prescription_result["code"]
       if code not in range(200,300):
             return {
                   code: 500,
-                  "data": {"account_result": account_result},
-                  "message": "Doctor ID not found"
+                  "data": {"prescription_result": prescription_result},
+                  "message": "Error creating prescription"
             }
       
-      # 3. check get paitent allegry 
-      # invoke the account microservice
+      # 4. send prescription ID to AMQP broker
 
-      # 4. Record new prescription
-      # invoke the prescription microservice
-
-      # 5. send prescription ID to AMQP broker
-
-
+      # 5. Return preacription result
+      return {
+            "code": 201,
+            "data": {
+                  "prescription_result": prescription_result
+            }
+      }
 
 # Execute this program if it is run as a main script (not by 'import')
 if __name__ == "__main__":

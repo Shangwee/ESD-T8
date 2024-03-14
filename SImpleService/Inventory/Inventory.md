@@ -28,3 +28,10 @@ quantity (Int)
 ```/inventory/<int:inventoryID>```
 1. method: PUT
     update specific inventory
+
+*version*
+v1.0
+created the inventory microservice
+
+v1.1
+added new 'alternative' column

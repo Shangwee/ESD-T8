@@ -10,6 +10,7 @@ prescriptionID INT AUTO_INCREMENT PRIMARY KEY,
 patientID INT NOT NULL,
 doctorID INT NOT NULl,
 medicine JSON
+process BOOLEAN
 
 In medicine 
 each medcine include
@@ -43,3 +44,12 @@ each medcine include
 3. if no, return all good
 4. if yes, system retrieve inventory to find similar drugs and return UI about the change.
 
+*version*
+v1.0
+created the new prescription microservice
+
+v1.1
+changed the sql table with include a json for medicine data field
+
+v1.2
+added a new column 'process', this check if the prescription is being process yet, it will be stored as a boolean

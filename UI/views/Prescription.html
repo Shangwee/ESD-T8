@@ -301,7 +301,7 @@
               <div class="col-md-12"> 
                   <ul class="list-group">
                       <li class="list-group-item d-flex justify-content-between align-items-center"  v-for="(item, index) in prescriptions">
-                          <div v-if="editlist.includes(item.medcineID)">
+                          <div v-if="editlist.includes(item.medicineID)">
                             <span class="item-name">{{item.medicineName}}</span>
                             <div class="my-3">
                               <input type="text" class="form-control" v-model="item.instruction" placeholder="Enter instruction here">
@@ -316,7 +316,7 @@
                             <span class="badge bg-info rounded-pill ms-2">Qty: {{item.quantity}}</span>
                           </div>
                           <div>
-                            <button v-if="editlist.includes(item.medcineID)" class="btn btn-success btn-sm edit-item mx-1" @click="saveMedicine(item)">Save</button>
+                            <button v-if="editlist.includes(item.medicineID)" class="btn btn-success btn-sm edit-item mx-1" @click="saveMedicine(item)">Save</button>
                             <button v-else class="btn btn-primary btn-sm edit-item mx-1" v-on:click="editMedicine(item)">Edit</button>
                             <button class="btn btn-danger btn-sm delete-item mx-1" v-on:click="removePrescription(item.index)">Delete</button>
                           </div>

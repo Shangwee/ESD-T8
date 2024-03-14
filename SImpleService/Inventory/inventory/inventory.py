@@ -21,16 +21,18 @@ class Inventory(db.Model):
     medicine = db.Column(db.String(64), nullable=False)
     price = db.Column(db.Float(precision=2), nullable=False)
     quantity = db.Column(db.Integer)
+    alternative = db.Column(db.JSON, nullable=True)
 
 
-    def __init__(self, medicine, price, quantity):
+    def __init__(self, medicine, price, quantity, alternative):
         self.medicine = medicine
         self.price = price
         self.quantity = quantity
+        self.alternative = alternative
 
 
     def json(self):
-        return {"inventoryID": self.inventoryID, "medicine": self.medicine, "price": self.price, "quantity": self.quantity}
+        return {"inventoryID": self.inventoryID, "medicine": self.medicine, "price": self.price, "quantity": self.quantity, "alternative": self.alternative}
 
 
 @app.route("/inventory")
@@ -121,6 +123,7 @@ def update_inventory(inventoryID):
         inventory.medicine = data['medicine']
         inventory.price = data['price']
         inventory.quantity = data['quantity']
+        inventory.alternative = data['alternative']
         db.session.commit()
         return jsonify(
             {

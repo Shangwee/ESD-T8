@@ -1,0 +1,19 @@
+version: "3.8"
+
+
+services:
+
+#################################
+# CreatePrescription: The CreatePrescription service
+#################################
+
+  createPrescription:
+    build:
+      context: ./createprescription
+      dockerfile: Dockerfile
+    image: ESDT8/createprescription:1.0
+    restart: always
+    ports:
+      - "6003:6003"
+    environment:
+      PYTHONUNBUFFERED: 1 

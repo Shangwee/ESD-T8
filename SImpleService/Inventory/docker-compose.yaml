@@ -28,7 +28,7 @@ services:
     build:
       context: ./inventory
       dockerfile: Dockerfile
-    image: ESDT8/inventory:1.0
+    image: ESDT8/inventory:1.1
     restart: always
     ports:
       - "5002:5000"

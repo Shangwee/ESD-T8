@@ -19,5 +19,7 @@ table name: account
 Account will be doctor if role = 0
 Account will be patient if role = 1 
 
+First 3 accounts will be doctor's account
+
 *instructions*
 - in accounts root folder, run docker compose up
