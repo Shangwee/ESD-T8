@@ -1,0 +1,12 @@
+version: "3.8"
+
+services:
+
+  #################################
+  # AMQP: The RabbitMQ microservice
+  #################################
+  rabbitmq:
+    build: ./amqp
+    image: mondo/amqp
+    restart: always
+    ports: [5672:5672, 15672:15672, 15674:15674, 61613:61613]
