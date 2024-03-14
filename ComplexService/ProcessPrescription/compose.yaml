@@ -1,0 +1,12 @@
+version: "3.8"
+
+services:
+
+  #################################
+  # Process Prescription: The Process Prescription complex microservice
+  #################################
+  process:
+    build: ./process
+    image: mondo/process:1.0
+    restart: always
+    ports: [6001:5100]
