@@ -70,19 +70,21 @@ def get_invoice_by_patientID(patient_id):
 
 @app.route("/invoice/", methods=['POST'])
 def create_invoice():
-    # data = request.get_json()
+    # data = request.get_json() 
+    # medicine * quantity -- use a loop 
+    # if receive nothing for payment status, pass as 0  
     patient_id = request.json.get('patient_id', None)
     medicine = request.json.get('medicine', None)
     total_price = request.json.get('total_price', None)
-    payment_status = request.json.get('payment_status', None)
-    if patient_id == None or medicine == None or total_price == None or payment_status == None:
+    # payment_status = request.json.get('payment_status', None) 
+    if patient_id == None or medicine == None or total_price == None:
           return jsonify(
         {
             "code": 400,
             "message": "missing data, please check again "
         }
         ), 201
-    newInvoice = Invoice(patient_id=patient_id, medicine = medicine, total_price=total_price, payment_status=payment_status)
+    newInvoice = Invoice(patient_id=patient_id, medicine = medicine, total_price=total_price, payment_status=0)
     try:
         db.session.add(newInvoice)
         db.session.commit()
