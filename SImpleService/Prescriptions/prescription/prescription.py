@@ -74,22 +74,25 @@ def create_prescription():
         }
     ), 201
 
-@app.route("/prescription/patient/<int:patient_id>")
-def get_by_patientID(patient_id):
-    prescription_list_by_paitent = db.session.scalars(
-        db.select(Prescription).filter_by(patientID = int(patient_id))
-    ).all()
-    if len(prescription_list_by_paitent):
+@app.route("/prescription/<int:prescriptionID>")
+def get_by_prescriptionID(prescriptionID):
+
+    prescription = db.session.scalars(
+    	db.select(Prescription).filter_by(prescriptionID = int(prescriptionID)).
+    	limit(1)
+        ).first()
+
+    if prescription:
         return jsonify(
             {
                 "code": 200,
-                "data": [prescription.json() for prescription in prescription_list_by_paitent]
+                "data": prescription.json()
             }
         )
     return jsonify(
         {
             "code": 404,
-            "message": "Prescription not found.",
+            "message": "Prescription not found."
         }
     ), 404
 
