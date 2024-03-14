@@ -142,6 +142,42 @@ def update_inventory(inventoryID):
             }
         ), 500
 
+@app.route("/inventory", methods=['POST'])
+def find_medicine_price():
+        newarr = []
+        data = request.json
+        medicines = data.get('medicine')
+
+        for medicine in medicines:
+            medicineID = medicine['medicineID']
+            quantity = medicine["quantity"]
+            inventory = db.session.scalars(db.select(Inventory).filter_by(inventoryID = int(medicineID)).limit(1)).first()
+            if inventory:
+                price = inventory.price
+                newdic = {"medicineID": medicineID, "quantity":quantity, "price":price}
+            else:
+                 return jsonify(
+                    {
+                        "code": 404,
+                        "message": "Inventory not found."
+                    }
+                ), 404
+            newarr.append(newdic)
+
+
+        return jsonify(
+           {
+               "code":250,
+                "InventorytoInvoice": newarr
+           }
+        )
+
+
+# [{"medicineID": 2, "medicineName": "CoughMedicine 2", "quantity": 5, "instruction": "Twice daily"}, {"medicineID": 4,"medicineName": "FluMedicine 1", "quantity": 2, "instruction": "As needed"}]
+# {[medicine id, quantity, price]}
+            
+    
+
         
 
 if __name__ == '__main__':

@@ -13,3 +13,7 @@ Prescription Simple Microservice:
 
 Others:
 - probably can standardise naming convention throughout (e.g. patientID vs patient_id)
+
+
+loop through prescription and get price from prescription, return a json object of {[medicine id, quantity, price]} - do it at simple inventory 
+ 
