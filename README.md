@@ -18,7 +18,7 @@ Simple service (5000)
 - invoice 5007
 
 Complex service (6000)
-- CreateMC 6001
+- ProcessPrescription 6001
 - CreatePayment 6002
 - CreatePresciption 6003
 
