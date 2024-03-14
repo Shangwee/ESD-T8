@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import os, sys
 from invokes import invoke_http
+import json
 
 app = Flask(__name__)
 CORS(app)
@@ -10,8 +11,6 @@ account_URL = "http://localhost:5001/account"
 inventory_URL = "http://localhost:5002/inventory"
 patient_record_URL = "http://localhost:5003/record"
 prescription_URL = "http://localhost:5004/prescription"
-
-
 
 @app.route("/create_prescription", methods=['POST'])
 def create_prescription():
@@ -46,6 +45,33 @@ def create_prescription():
 def processCreatePrescription(prescription):
       # 2. check allergies
       # invoke the account microservice
+      print('\n-----Invoking account microservice-----')
+      patientID = prescription["patientID"]
+      patient_result = invoke_http(account_URL + "/" + str(patientID), method='GET')
+      print('patient_result:', patient_result)
+      allergies = patient_result["data"]["allergies"]
+      prescriptionList = getIDinPrescription(prescription)
+
+      checkdata = {
+            "prescriptionList": prescriptionList,
+            "allergies": allergies
+      }
+      # convert to json
+      checkdata = json.dumps(checkdata)
+      print('\n-----Invoking prescription microservice-----')
+      check_result = invoke_http(prescription_URL + "/checkallergy", method='POST', json=checkdata)
+      print('check_result:', check_result)
+      allergy_code = check_result["code"]
+      alt_dictionary = {}
+      if allergy_code == 400:
+            allergic_medicine = check_result["data"]["allergic_medicine"]
+            return {
+                  "code": 400,
+                  "data": {
+                        "allergic_medicine": allergic_medicine,
+                  },
+                  "message": "Allergic medicine found"
+            }
 
       # 3. Record new prescription
       # invoke the prescription microservice
@@ -70,6 +96,20 @@ def processCreatePrescription(prescription):
                   "prescription_result": prescription_result
             }
       }
+
+def getIDinPrescription(preacription):
+      # invoke the prescription microservice
+      prescriptionList = []
+      for medicine in preacription["medicine"]:
+            prescriptionList.append(medicine["medicineID"])
+      return prescriptionList
+
+def getalternative(medicineID):
+      # invoke the inventory microservice
+      inventory_result = invoke_http(inventory_URL + "/" + str(medicineID), method='GET')
+      alternative = inventory_result["data"]["alternative"]
+      return alternative
+
 
 # Execute this program if it is run as a main script (not by 'import')
 if __name__ == "__main__":

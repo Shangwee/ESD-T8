@@ -19,6 +19,6 @@ VALUES ('John Doe', 'johndoe@email.com', 'password1', 0, NULL),
        ('Jane Smith', 'janesmith@email.com', 'password2', 0, NULL),
        ('Michael Lee', 'mlee@email.com', 'password3', 0, NULl),
        ('Alice Brown', 'aliceb@email.com', 'password4', 1, '["1"]'),
-       ('David Johnson', 'djohnson@email.com', 'password5', 1, '["7, 11"]'),
-       ('Dan White','dWhite@gmail.com','password6', 1, '["4, 8"]');
+       ('David Johnson', 'djohnson@email.com', 'password5', 1, '["7", "11"]'),
+       ('Dan White','dWhite@gmail.com','password6', 1, '["4", "8"]');
 

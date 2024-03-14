@@ -1,5 +1,7 @@
+var accountURL = 'http://localhost:5001/account/';
 var InventoryURL = 'http://localhost:5002/inventory';
 var createPresscriptionURL = 'http://localhost:6003/create_prescription';
+
 
 const app = Vue.createApp({
     data() {
@@ -9,7 +11,9 @@ const app = Vue.createApp({
             editlist : [],
             patientID: '',
             doctorID: '',
-
+            allergicTo: [],
+            patientName: '',
+            ispatient: ''
         }
     },
 
@@ -54,9 +58,34 @@ const app = Vue.createApp({
             console.log("after editing");
         },
 
+        getallergicTo(){
+            if (this.patientID != '') {
+                let id = this.patientID.toString();
+                axios.get(accountURL +id ).then((response) => {
+                this.patientName = response.data.data.name;
+                let allergicList = response.data.data.allergies;
+                // get inventory 
+                if (allergicList != null){
+                    for (medicine in this.inventory) {
+                        let inventoryID = this.inventory[medicine].inventoryID;
+                        for (allergic of allergicList) {
+                            if (inventoryID == parseInt(allergic)){
+                                let medName = this.inventory[medicine].medicine;
+                                this.allergicTo.push(medName);
+                            }
+                        }
+                    }
+                }
+                });
+            } else {
+                this.allergicTo = [];
+                this.patientName = '';
+            }
+        },
+
         savePrescription(){
             if(this.patientID <= 3 || this.doctorID >= 4 || this.prescriptions.length < 1){
-                alert("Please fill all the fields");
+                alert("Please fill all the fields properly.");
             } else {
                 let params = {
                     patientID: this.patientID,
@@ -66,7 +95,11 @@ const app = Vue.createApp({
                 axios.post(createPresscriptionURL, params).then((response) => {
                     console.log(response);
                     alert("Prescription created successfully");
-                });
+                })
+                .catch((error) => {
+                    let message = error.response.data.message;
+                    alert(message);
+                })
             }     
         }
     },

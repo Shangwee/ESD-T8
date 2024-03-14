@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import func
 from flask_cors import CORS
-
+import json
 from os import environ
 
 app = Flask(__name__)
@@ -127,6 +127,35 @@ def update_prescription(prescriptionID):
             "message": "Prescription not found."
         }
     ), 404
+
+@app.route("/prescription/checkallergy", methods=['POST'])
+def check_allergy():
+    data = request.get_json()
+    # convert json to dictionary
+    data = json.loads(data)
+    prescriptionList = data["prescriptionList"]
+    allergies = data["allergies"]
+    ToChangeList = []
+    for prescription in prescriptionList:
+        for allergy in allergies:
+            if prescription == int(allergy):
+                ToChangeList.append(prescription)
+    if len(ToChangeList) > 0:
+        return jsonify(
+            {
+                "code": 400,
+                "data": {
+                    "allergic_medicine": ToChangeList
+                },
+                "message": "Patient is allergic to some medicine."
+            }
+        ), 400
+    return jsonify(
+        {
+            "code": 200,
+            "message": "Patient is not allergic to any medicine."
+        }
+    )
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)

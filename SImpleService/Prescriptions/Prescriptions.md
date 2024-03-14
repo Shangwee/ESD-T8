@@ -38,11 +38,11 @@ each medcine include
 2. method: PUT
     update prescription details
 
-```/prescription/CheckAllergy/<<int:patient_id>>``` *to be implemented*
+```/prescription/checkallergy/``` *to be implemented*
 1. retrieve allergy based on patient id from accounts
 2. check if prescribe medicine is on the list
 3. if no, return all good
-4. if yes, system retrieve inventory to find similar drugs and return UI about the change.
+4. if yes return the list of allergy
 
 *version*
 v1.0
@@ -53,3 +53,6 @@ changed the sql table with include a json for medicine data field
 
 v1.2
 added a new column 'process', this check if the prescription is being process yet, it will be stored as a boolean
+
+v1.3
+added a new route for ```/prescription/checkallergy```   
