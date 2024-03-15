@@ -50,6 +50,28 @@ def get_all():
         }
     ), 404
 
+@app.route("/prescription/filter_process/<int:value>")
+def get_prescription_by_filter(value):
+
+    prescriptionlist = db.session.scalars(
+    	db.select(Prescription).filter_by(process = value)).all()
+
+    if prescriptionlist:
+        return jsonify(
+            {
+                "code": 200,
+                "data": {
+                    "prescriptions": [prescription.json() for prescription in prescriptionlist]
+                }
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "Prescription not found."
+        }
+    ), 404
+
 @app.route("/prescription", methods=['POST'])
 def create_prescription():
     data = request.get_json()
