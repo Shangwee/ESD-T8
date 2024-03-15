@@ -142,19 +142,23 @@ def update_inventory(inventoryID):
             }
         ), 500
 
-@app.route("/inventory", methods=['POST'])
+@app.route("/inventory/find_medicine_price", methods=['POST'])
 def find_medicine_price():
         newarr = []
         data = request.json
-        medicines = data.get('medicine')
+        medicines = data['data']['medicine']
+        patientID = data['data']['patientID']
+        newarr.append({"patientID":patientID}) 
+        # medicines = data.get('medicine')
 
         for medicine in medicines:
             medicineID = medicine['medicineID']
             quantity = medicine["quantity"]
+            medicineName = medicine['medicineName']
             inventory = db.session.scalars(db.select(Inventory).filter_by(inventoryID = int(medicineID)).limit(1)).first()
             if inventory:
                 price = inventory.price
-                newdic = {"medicineID": medicineID, "quantity":quantity, "price":price}
+                newdic = {"medicineID": medicineID, "medicineName":medicineName, "quantity":quantity, "price":price}
             else:
                  return jsonify(
                     {
@@ -167,12 +171,12 @@ def find_medicine_price():
 
         return jsonify(
            {
-               "code":250,
-                "InventorytoInvoice": newarr
+               "code":201,
+               "InventorytoInvoice": newarr
            }
         )
 
-
+# this method returns in the format of [{medicineid,quantity,price},{medicineid,quantity,price},{medicineid,quantity,price}]
 # [{"medicineID": 2, "medicineName": "CoughMedicine 2", "quantity": 5, "instruction": "Twice daily"}, {"medicineID": 4,"medicineName": "FluMedicine 1", "quantity": 2, "instruction": "As needed"}]
 # {[medicine id, quantity, price]}
             

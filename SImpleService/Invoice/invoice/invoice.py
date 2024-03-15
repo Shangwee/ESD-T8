@@ -68,27 +68,6 @@ def get_invoice_by_patientID(patient_id):
         }
     ), 404
 
-## tabulation method TBC
-
-# @app.route("/invoice/<int:patient_id>")
-# def get_total_price(patient_id):
-#     invoice_by_patient = db.session.scalars(
-#         db.select(Invoice).filter_by(patient_id = int(patient_id))
-#     ).all()
-#     if len(invoice_by_patient):
-#         return jsonify(
-#             {
-#                 "code": 200,
-#                 "data": [invoice.json() for invoice in invoice_by_patient]
-#             }
-#         )
-#     return jsonify(
-#         {
-#             "code": 404,
-#             "message": "Invoice not found.",
-#         }
-#     ), 404
-
 
 @app.route("/invoice/", methods=['POST'])
 def create_invoice():
@@ -119,6 +98,42 @@ def create_invoice():
                 "message": "An error occurred creating the invoice."
             }
         ), 500
+    
+
+
+## tabulation method TBC
+
+@app.route("/invoice/getTotalPrice", methods=['POST'])
+def get_total_price():
+    totalprice=0
+    data = request.json
+    newdic = {}
+    if data:
+        for medicine in data['InventorytoInvoice']:
+            if('price' in  medicine and 'quantity' in medicine):
+                 totalprice += medicine['price'] * medicine['quantity']
+        invoice_details = {
+            "patientID" : data["InventorytoInvoice"][0]["patientID"],
+            "medicineItems" : data["InventorytoInvoice"][1:],
+            "medicinetotalprice":totalprice
+        }
+        # del data['InventorytoInvoice']
+        return jsonify(
+            {
+               "code":212,
+               **invoice_details
+                 
+            }
+        )
+        
+    else:
+           return jsonify(
+                    {
+                        "code": 404,
+                        "message": "No prescription result passed"
+                    }
+                ), 404
+
 
 # {
 #     "prescriptionID": self.prescriptionID,

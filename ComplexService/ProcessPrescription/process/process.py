@@ -10,7 +10,7 @@ CORS(app)
 
 prescription_URL = "http://host.docker.internal:5004/prescription/"
 inventory_URL = "http://host.docker.internal:5002/inventory/"
-# invoice_URL = "http://host.docker.internal:5007/invoice"
+invoice_URL = "http://host.docker.internal:5007/invoice"
 
 
 @app.route("/process", methods=["POST"])
@@ -82,9 +82,15 @@ def processPrescription(id):
 
     # 5. Get medicine price
     # Invoke the Inventory microservice
+    print('\n-----Invoking inventory microservice-----')
+    inventory_result = invoke_http(inventory_URL, method='POST', json=prescription_result)
+    print('inventory_result:', inventory_result)
 
     # 6. Create invoice
     # Invoke the Invoice microservice
+    print('\n-----Invoking inventory microservice-----')
+    inventory_result = invoke_http(invoice_URL, method='POST', json=inventory_result)
+    print('inventory_result:', inventory_result)
 
     return {
         "code": 201,
