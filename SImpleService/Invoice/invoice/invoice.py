@@ -50,9 +50,9 @@ def get_all():
     ), 404
 
 @app.route("/invoice/<int:patient_id>")
-def get_invoice_by_patientID(patient_id):
+def get_unpaid_invoice_by_patientID(patient_id):
     invoice_by_patient = db.session.scalars(
-        db.select(Invoice).filter_by(patient_id = int(patient_id))
+        db.select(Invoice).filter_by(patient_id = int(patient_id), payment_status = 0)
     ).all()
     if len(invoice_by_patient):
         return jsonify(
@@ -134,6 +134,38 @@ def get_total_price():
                         "message": "No prescription result passed"
                     }
                 ), 404
+
+
+@app.route('/invoice/<int:invoice_id>', methods=['PUT'])
+def update_invoice_payment_status(invoice_id):
+    data = request.get_json()
+    invoice = db.session.scalars(
+        db.select(Invoice).filter_by(invoice_id = int(invoice_id))
+    ).first()
+    if invoice:
+        try:
+            invoice.payment_status = data['payment_status']
+            db.session.commit()
+        except:
+            return jsonify(
+                {
+                    "code": 500,
+                    "data": data,
+                    "message": "An error occurred updating the invoice payment status"
+                }
+            ), 500
+        return jsonify(
+            {
+                "code": 200,
+                "data": invoice.json()
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "Invoice not found."
+        }
+    ), 404
 
 
 # {
