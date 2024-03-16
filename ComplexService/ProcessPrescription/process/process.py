@@ -89,7 +89,7 @@ def processPrescription(id):
     # 6. Create invoice
     # Invoke the Invoice microservice
     print('\n-----Invoking inventory microservice-----')
-    inventory_result = invoke_http(invoice_URL, method='POST', json=inventory_result)
+    invoice_result = invoke_http(invoice_URL, method='POST', json=inventory_result)
     print('inventory_result:', inventory_result)
 
     return {

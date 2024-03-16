@@ -115,7 +115,8 @@ def get_total_price():
         invoice_details = {
             "patientID" : data["InventorytoInvoice"][0]["patientID"],
             "medicineItems" : data["InventorytoInvoice"][1:],
-            "medicinetotalprice":totalprice
+            "medicinetotalprice":totalprice,
+            "paymentstatus" : 0
         }
         # del data['InventorytoInvoice']
         return jsonify(
