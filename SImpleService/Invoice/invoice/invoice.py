@@ -17,7 +17,7 @@ class Invoice(db.Model):
 
     invoice_id = db.Column(db.Integer, autoincrement=True, primary_key=True, nullable=True)
     patient_id = db.Column(db.Integer, nullable=False)
-    medicine = db.Column(db.String(64), nullable=False)
+    medicine = db.Column(db.JSON, nullable=False)
     total_price = db.Column(db.Float(precision=2), nullable=False)
     payment_status = db.Column(db.Integer, nullable=False)
 
