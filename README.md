@@ -8,6 +8,7 @@ DB starts (3300)
 - prescription 3304
 - dispenser ----
 - invoice 3307
+- mc 3308
 
 Simple service (5000)
 - account 5001
@@ -16,6 +17,7 @@ Simple service (5000)
 - prescription 5004
 - dispenser 5005
 - invoice 5007
+- mc 5008
 
 Complex service (6000)
 - ProcessPrescription 6001

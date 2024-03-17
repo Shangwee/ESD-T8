@@ -1,0 +1,34 @@
+version: "3.8"
+
+services:
+
+#################################
+# mc: The mc microservice
+#################################
+
+  invoice:
+    build:
+      context: ./mc
+      dockerfile: Dockerfile
+    image: ESDT8/mc:1.0
+    restart: always
+    ports:
+      - "5008:5000"
+    environment:
+      dbURL: mysql+mysqlconnector://root@host.docker.internal:3308/mc
+
+#################################
+# Database: The Database
+#################################
+
+  db:
+    image: mysql:latest
+    restart: always
+    ports:
+      - "3308:3306"
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: yes  
+      MYSQL_DATABASE: mc
+    volumes:
+     - ./db/mc.sql:/docker-entrypoint-initdb.d/init.sql
+

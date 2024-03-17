@@ -21,28 +21,35 @@ def test():
 
 @app.route('/create-checkout-session', methods=['POST'])
 def create_checkout_session():
+    print("it is coming inDO?")
     try:
-        data = request.json
-        invoice_id = data['invoice_id']
-        total_price = data['total_price']
+        if request.json:
+            data = request.json
+            print(data)
+            invoice_id = data['invoice_id']
+            print(f"this is invoice_id {invoice_id}")
+            total_price = data['total_price']
+            print(f"this is total price {total_price}")
 
-        checkout_session = stripe.checkout.Session.create(
-            line_items=[
-                {
-                    'price_data': {
-                        'currency': "SGD",
-                        'unit_amount': int(total_price),
-                        'product_data': {
-                            'name': f'Invoice No. : {invoice_id}',
-                        }
+            checkout_session = stripe.checkout.Session.create(
+                line_items=[
+                    {
+                        'price_data': {
+                            'currency': "SGD",
+                            'unit_amount': int(total_price),
+                            'product_data': {
+                                'name': f'Invoice No. : {invoice_id}',
+                            }
+                        },
+                        'quantity': 1
                     },
-                    'quantity': 1
-                },
-            ],
-            mode='payment',
-            success_url=YOUR_DOMAIN + '/success.html',
-            cancel_url=YOUR_DOMAIN + '/checkout.html',
-        )
+                ],
+                mode='payment',
+                success_url=YOUR_DOMAIN + '/success.html',
+                cancel_url=YOUR_DOMAIN + '/checkout.html',
+            )
+        else:
+            print("this is not working")
 
         # return jsonify({"code": 200, "message": 'successful payment'})
 

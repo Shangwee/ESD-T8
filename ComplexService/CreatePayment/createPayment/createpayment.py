@@ -10,8 +10,8 @@ CORS(app)
 prescription_URL = "http://host.docker.internal:5004/prescription/"
 inventory_URL = "http://host.docker.internal:5002/inventory/"
 invoice_URL = "http://host.docker.internal:5007/invoice"
-
-createCheckout_URL = "http://localhost:4242/create-checkout-session"
+MC_URL  = "http://host.docker.internal:500/MC"
+createCheckout_URL = "http://host.docker.internal:4242//create-checkout-session"
 
 @app.route("/test")
 def test():
@@ -31,6 +31,7 @@ def create_payment():
             return jsonify(result), result["code"]
         
         except Exception as e:
+            # print("hello")
             # Unexpected error in code
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
@@ -56,13 +57,17 @@ def processCreatePayment(invoice_details):
     
     #convert to JSON object
     invoice = json.dumps(invoice_details)
-    print(invoice)
-    abc = {"invoice_id": 3, "medicine": [{"medicineID": 1, "medicineName": "CoughMedicine 2", "price": 20.0, "quantity": 5}, { "medicineID": 1, "medicineName": "CoughMedicine 2",  "price": 20.0, "quantity": 5}, { "medicineID": 1, "medicineName": "CoughMedicine 2",  "price": 20.0, "quantity": 5}], "patient_id": 2, "payment_status": 0, "total_price": 10.0}
+    print(invoice + "this is working")
+    abc = {"invoice_id": 3, "medicine": [{"medicineID": 1, "medicineName": "CoughMedicine 2", "price": 20.0, "quantity": 5}, { "medicineID": 1, "medicineName": "CoughMedicine 2",  "price": 20.0, "quantity": 5}, { "medicineID": 1, "medicineName": "CoughMedicine 2",  "price": 20.0, "quantity": 5}], "patient_id": 2, "payment_status": 0, "total_price": 10000000}
     stripe_payment_result = invoke_http(createCheckout_URL, method='POST', json=abc)
     print('stripe_payment_result:', stripe_payment_result)
-    
-    
     # 3. In payment successful - update invoice_payment_status
+    UpdateInvoiceResult = invoke_http(invoice_URL, method='PUT', json="TBC")
+    
+    #4. create MC 
+    MC = invoke_http(MC_URL, method='POST', json=stripe_payment_result)
+
+
 
 
     # return {
