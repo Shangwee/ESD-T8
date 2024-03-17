@@ -1,6 +1,5 @@
 var createCheckout = 'http://localhost:4242/create-checkout-session';
 var createPayment_URL = 'http://localhost:6002/createpayment';
-var test = 'http://localhost:6002/test';
 
 const app = Vue.createApp({
     data() {
@@ -46,30 +45,27 @@ const app = Vue.createApp({
                 });
         },
 
-        test1(event) {
+        test(event) {
             /* send to createpayment complex microservice*/
             const invoice = JSON.parse(event.target.dataset.invoice);
-            console.log(invoice)
 
-            var invoice_id = invoice['invoice_id']
-            var total_price = invoice['total_price'] * 100
-            console.log(invoice_id)
-            console.log(total_price)
-            let params = {
-                        invoice_id: invoice_id,
-                        total_price: total_price
-                    };
-
-            axios.post(createPayment_URL, params)
-                .then(response => {
-                    console.log(response);
-                    alert("sent over to createPayment complex");
-                })
-                .catch((error) => {
-                    console.log(error.response.data)
-                    alert("failed to send over to createPayment complex")
-                })
-        }
+            fetch(createPayment_URL,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-type": "application/json"
+                    },
+                    body: JSON.stringify(invoice)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                console.log("sent over to createpayment complex successfully")
+            })
+            .catch(error => {
+                console.log("There is some problem sending to complex. " + error)
+            })
+        },
 
     },
 
@@ -80,6 +76,3 @@ const app = Vue.createApp({
 }); 
 
 const vm = app.mount('#invoice');
-
-
-
