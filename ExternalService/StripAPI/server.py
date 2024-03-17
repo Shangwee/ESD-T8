@@ -1,5 +1,5 @@
 import os
-from flask import Flask, redirect, request
+from flask import Flask, redirect, request, jsonify
 from flask_cors import CORS
 
 import stripe
@@ -13,6 +13,11 @@ app = Flask(__name__,
 CORS(app)
 
 YOUR_DOMAIN = 'http://localhost:4242'
+
+@app.route('/test')
+def test():
+    return 'hello world'
+
 
 @app.route('/create-checkout-session', methods=['POST'])
 def create_checkout_session():
@@ -38,6 +43,9 @@ def create_checkout_session():
             success_url=YOUR_DOMAIN + '/success.html',
             cancel_url=YOUR_DOMAIN + '/checkout.html',
         )
+
+        # return jsonify({"code": 200, "message": 'successful payment'})
+
     except Exception as e:
         return str(e)
     

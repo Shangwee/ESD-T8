@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+
+  #################################
+  # Create Payment: The Create Payment complex microservice
+  #################################
+
+  createPayment:
+    build:
+      context: ./createpayment
+      dockerfile: Dockerfile
+    image: ESDT8/createpayment:1.0
+    restart: always
+    ports:
+      - "6002:6002"
+    environment:
+      PYTHONUNBUFFERED: 1 
