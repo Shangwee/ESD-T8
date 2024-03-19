@@ -24,16 +24,19 @@ class mc(db.Model):
     patientid = db.Column(db.Integer, nullable=False)
     patientname = db.Column(db.String(64), nullable=False)
     numberofdays = db.Column(db.Integer, nullable=False)
+    assigned = db.Column(db.Integer(), nullable=False)
+
     # total_price = db.Column(db.Float(precision=2), nullable=False)
     # payment_status = db.Column(db.Integer, nullable=False)
 
-    def __init__(self, patientname, numberofdays, patientid):
+    def __init__(self, patientname, numberofdays, patientid, assigned):
         self.patientid = patientid
         self.patientname = patientname
         self.numberofdays = numberofdays
+        self.assigned = assigned
 
     def json(self):
-        return {"mcid": self.mcid,"patientid":self.patientid, "patientname": self.patientname, "numberofdays": self.numberofdays}
+        return {"mcid": self.mcid,"patientid":self.patientid, "patientname": self.patientname, "numberofdays": self.numberofdays, "assigned": self.assigned}
 
 
 @app.route("/mc/create_mc", methods=['POST'])
@@ -44,6 +47,7 @@ def create_mc():
     patientid = request.json.get('patient_id', None)
     patientname = request.json.get('patient_name', None)
     numberofdays = request.json.get('numberofdays', None)
+   
     # payment_status = request.json.get('payment_status', None) 
     if patientid == None or patientname == None or numberofdays == None:
           return jsonify(
@@ -52,7 +56,7 @@ def create_mc():
             "message": "missing data, please check again "
         }
         ), 201
-    mc_new = mc(patientid=patientid, patientname = patientname, numberofdays=numberofdays)
+    mc_new = mc(patientid=patientid, patientname = patientname, numberofdays=numberofdays, assigned = 0)
     try:
         db.session.add(mc_new)
         db.session.commit()
@@ -69,7 +73,8 @@ def create_mc():
                 "error": str(e)
             }
         ), 500
-    
+
+#this is a testing function
 @app.route("/mc")
 def get_all():
     mclist = db.session.scalars(db.select(mc)).all()
@@ -78,14 +83,38 @@ def get_all():
             {
                 "code": 200,
                 "data": {
-                    "invoices": [mc.json() for mc in mclist]
+                    "mc": [mc.json() for mc in mclist]
                 }
             }
         )
     return jsonify(
         {
             "code": 404,
-            "message": "There are no invoices.",
+            "message": "There are no mc.",
+        }
+    ), 404
+
+#retrieve one single mc from one patient record based on status
+@app.route("/mc/retrievalofsinglerecord/<int:patient_id>")
+def get_mc_record(patient_id):
+    mc_record = db.select(mc).where(mc.patientid == patient_id, mc.assigned == 0)
+    mclist = db.session.scalars(mc_record).all()
+    if len(mclist):
+        for record in mclist:
+            record.assigned = 1
+        db.session.commit()
+        return jsonify(
+            {
+                "code": 200,
+                "data": {
+                    "mc": [mc.json() for mc in mclist]
+                }
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "There is no mc.",
         }
     ), 404
 
