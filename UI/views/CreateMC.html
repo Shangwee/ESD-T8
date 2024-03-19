@@ -322,13 +322,13 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.2/dist/chart.umd.js" integrity="sha384-eI7PSr3L1XLISH8JdDII5YN/njoSsxfbrkCTnJrzXt+ENP5MOVBxD+l6sEG4zoLp" crossorigin="anonymous"></script>
     <script>
 
-      url = "http://localhost:5008/mc"
+      url = "http://localhost:5008/mc/retrievalofsinglerecord/1"
      
       axios.get(url)
         .then(response => {
           console.log(response.data);
-          const patientname = response.data.data.invoices[0].patientname;
-          const numberofdays = response.data.data.invoices[0].numberofdays;
+          const patientname = response.data.data.mc[0].patientname;
+          const numberofdays = response.data.data.mc[0].numberofdays;
 
           const dt = new Date();
           date = dateformat(dt);
