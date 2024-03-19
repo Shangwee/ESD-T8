@@ -94,6 +94,10 @@ const app = Vue.createApp({
                 }
                 axios.post(createPresscriptionURL, params).then((response) => {
                     console.log(response);
+                    this.prescriptions = [];
+                    this.patientID = '';
+                    this.doctorID = '';
+                    this.allergicTo = [];
                     alert("Prescription created successfully");
                 })
                 .catch((error) => {

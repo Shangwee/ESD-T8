@@ -2,15 +2,16 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import os, sys
 from invokes import invoke_http
+import amqp_connection
+import pika
 import json
 
 app = Flask(__name__)
 CORS(app)
 
-account_URL = "http://localhost:5001/account"
-inventory_URL = "http://localhost:5002/inventory"
-patient_record_URL = "http://localhost:5003/record"
-prescription_URL = "http://localhost:5004/prescription"
+account_URL = "http://host.docker.internal:5001/account"
+inventory_URL = "http://host.docker.internal:5002/inventory"
+prescription_URL = "http://host.docker.internal:5004/prescription"
 
 @app.route("/create_prescription", methods=['POST'])
 def create_prescription():
@@ -62,7 +63,6 @@ def processCreatePrescription(prescription):
       check_result = invoke_http(prescription_URL + "/checkallergy", method='POST', json=checkdata)
       print('check_result:', check_result)
       allergy_code = check_result["code"]
-      alt_dictionary = {}
       if allergy_code == 400:
             allergic_medicine = check_result["data"]["allergic_medicine"]
             return {
@@ -87,7 +87,16 @@ def processCreatePrescription(prescription):
                   "message": "Error creating prescription"
             }
       
+      
       # 4. send prescription ID to AMQP broker
+      print('\n-----Sending prescription ID to AMQP broker-----')
+      exchangename = "dispenser_direct" # exchange name
+      connection = amqp_connection.create_connection() 
+      channel = connection.channel()
+
+      message=json.dumps({"prescription_id": prescription_result['data']['prescriptionID']})
+      channel.basic_publish(exchange=exchangename, routing_key="prescription.id", body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
+      print("Prescription ID sent to AMQP broker")
 
       # 5. Return preacription result
       return {
