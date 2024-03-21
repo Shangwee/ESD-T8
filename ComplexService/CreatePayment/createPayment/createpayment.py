@@ -95,6 +95,12 @@ def processPostPayment(invoice_details):
 
     #4. create MC 
     MC = invoke_http(MC_URL, method='POST', json=invoice)
+    cd = MC['code']
+    if cd not in range(200, 300):
+        return {
+            code: 500,
+            "message": "Error updating invoice payment status"
+        }
 
 
     return {
