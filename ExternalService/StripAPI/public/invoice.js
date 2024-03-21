@@ -1,26 +1,7 @@
 var createCheckout = 'http://localhost:4242/create-checkout-session';
 var createPayment_URL = 'http://localhost:6002/createpayment';
+var invoice_url = 'http://localhost:5007/invoice/2';
 
-
-// function getQueryVariable(variable) {
-//     var query = window.location.search.substring(1);
-//     var vars = query.split('&');
-//     for (var i = 0; i < vars.length; i++) {
-//         var pair = vars[i].split('=');
-//         if (decodeURIComponent(pair[0]) == variable) {
-//             return decodeURIComponent(pair[1].replace(/\+/g, ' '));
-//         }
-//     }
-//     return null;
-// }
-
-// const status = getQueryVariable('status');
-// const message = getQueryVariable('invoice_number');
-
-// console.log(getQueryVariable('status'));
-
-// var dup_invoice = '';
-// console.log('duplicate: ', dup_invoice);
 
 function clearQueryVariable(variable) {
     var baseUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
@@ -51,20 +32,41 @@ const app = Vue.createApp({
         return {
             invoices: [],
             total_price: 0,
-            chosen_invoice: ''
+            chosen_invoice: '',
+            display: false
         }
     },
 
     methods:{
         getInvoice(){
-            var testing =
-                [
-                    {"invoice_id": 3, "medicine": [{"medicineID": 1, "medicineName": "CoughMedicine 2", "price": 20.0, "quantity": 5}, { "medicineID": 1, "medicineName": "CoughMedicine 2",  "price": 20.0, "quantity": 5}, { "medicineID": 1, "medicineName": "CoughMedicine 2",  "price": 20.0, "quantity": 5}], "patient_id": 3, "payment_status": 0, "total_price": 10.0},
-                    {"invoice_id": 4, "medicine": [{"medicineID": 2, "medicineName": "CoughMedicine 3", "price": 20.0, "quantity": 5}], "patient_id": 2, "payment_status": 0, "total_price": 10.0},
-                ]
+            // var testing =
+            //     [
+            //         {"invoice_id": 3, "medicine": [{"medicineID": 1, "medicineName": "CoughMedicine 2", "price": 20.0, "quantity": 5}, { "medicineID": 1, "medicineName": "CoughMedicine 2",  "price": 20.0, "quantity": 5}, { "medicineID": 1, "medicineName": "CoughMedicine 2",  "price": 20.0, "quantity": 5}], "patient_id": 3, "payment_status": 0, "total_price": 10.0},
+            //         {"invoice_id": 4, "medicine": [{"medicineID": 2, "medicineName": "CoughMedicine 3", "price": 20.0, "quantity": 5}], "patient_id": 2, "payment_status": 0, "total_price": 10.0},
+            //     ]
 
-            this.invoices = testing;
-            console.log(testing)
+            // this.invoices = testing;
+            // console.log(testing)
+
+
+            // will need to change to Get Patient ID from UI later on
+            axios.get(invoice_url)
+                .then(response => {
+                    console.log("successful retrieval")
+                    console.log(response.data)
+                    invoices = response.data.data
+                    this.invoices = invoices
+                    console.log(typeof(invoices))
+                    console.log(invoice)
+                    console.log(this.invoices)
+                    this.display = true
+                })
+                .catch(error => {
+                    console.log("failed to retrieve invoice from DB")
+                    console.log(error)
+                })
+
+
         },
 
         createCheckout() {

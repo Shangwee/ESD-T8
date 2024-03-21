@@ -260,47 +260,53 @@
         <!-- Start of Main page -->
         <main class="col-md-8 ms-sm-auto col-lg-10 col-sm-12 px-md-4">
         
-            <div class="container mt-4" v-for="(invoice, index) in invoices">
-                <div class="invoice">
-                    <h3>Invoice No. : {{invoice.invoice_id}}</h3>
+            <div v-if="invoices.length > 0">
+                <div class="container mt-4" v-for="(invoice, index) in invoices">
+                    <div class="invoice">
+                        <h3>Invoice No. : {{invoice.invoice_id}}</h3>
 
-                    <br>
+                        <br>
 
-                    <table class="table table-hover">
-                        <thead>
-                            <tr class="table-secondary">
-                                <th>Description</th>
-                                <th>Quantity</th>
-                                <th>Price</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(medicine, index) in invoice.medicine">
-                                <td>{{medicine.medicineName}}</td>
-                                <td>{{medicine.quantity}}</td>
-                                <td class="text-right">{{medicine.price}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <div class="row">
-                        <div class="col-8"></div>
-                        <div class="col-4">
-                        <table class="table table-sm text-right table-warning">
-                            <tr>
-                            <td><strong>Total Price</strong></td>
-                            <td class="text-right"><strong>$ {{invoice.total_price}}</strong></td>
-                            </tr>
+                        <table class="table table-hover">
+                            <thead>
+                                <tr class="table-secondary">
+                                    <th>Description</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(medicine, index) in invoice.medicine">
+                                    <td>{{medicine.medicineName}}</td>
+                                    <td>{{medicine.quantity}}</td>
+                                    <td class="text-right">{{medicine.price}}</td>
+                                </tr>
+                            </tbody>
                         </table>
+
+                        <div class="row">
+                            <div class="col-8"></div>
+                            <div class="col-4">
+                            <table class="table table-sm text-right table-warning">
+                                <tr>
+                                <td><strong>Total Price</strong></td>
+                                <td class="text-right"><strong>$ {{invoice.total_price}}</strong></td>
+                                </tr>
+                            </table>
+                            </div>
                         </div>
+
+                        <input type="hidden" id="invoice_id" v-bind:value="invoice.invoice_id">
+                        <input type="hidden" id="total_price" v-bind:value="invoice.total_price">
+                        <button type="submit" v-on:click="createCheckout()" v-bind:data-invoice="JSON.stringify(invoice)">Make Payment</button>
+                        <button type="submit" id="invoice_detail" v-on:click="test" v-bind:data-invoice="JSON.stringify(invoice)">Send invoice to complex microservice</button>
+
                     </div>
-
-                    <input type="hidden" id="invoice_id" v-bind:value="invoice.invoice_id">
-                    <input type="hidden" id="total_price" v-bind:value="invoice.total_price">
-                    <button type="submit" v-on:click="createCheckout()" v-bind:data-invoice="JSON.stringify(invoice)">Make Payment</button>
-                    <button type="submit" id="invoice_detail" v-on:click="test" v-bind:data-invoice="JSON.stringify(invoice)">Send invoice to complex microservice</button>
-
                 </div>
+            </div>
+
+            <div v-else>
+                <h2 class="mt-4">Congrats! No payment to make</h2>
             </div>
 
         </main>
