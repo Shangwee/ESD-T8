@@ -13,7 +13,7 @@ const app = Vue.createApp({
             // check if the user is logged in
             let account = JSON.parse(sessionStorage.getItem('account'));
             if (account != null) {
-                window.location.href = '../Prescription.php';
+                window.location.href = '../index.php';
             }
         },
 

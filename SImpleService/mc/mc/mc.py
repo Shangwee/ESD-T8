@@ -43,11 +43,22 @@ class mc(db.Model):
 def create_mc():
     # data = request.get_json() 
     # medicine * quantity -- use a loop 
-    # if receive nothing for payment status, pass as 0  
+    # if receive nothing for payment status, pass as 0 
+    # abc = {"invoice_id": 3, "medicine": [{"medicineID": 1, "medicineName": "CoughMedicine 2", "price": 20.0, "quantity": 5}, { "medicineID": 1, "medicineName": "CoughMedicine 2",  "price": 20.0, "quantity": 5}, { "medicineID": 1, "medicineName": "CoughMedicine 2",  "price": 20.0, "quantity": 5}], "patient_id": 2, "payment_status": 0, "total_price": 10000000}
+    listofillness = {"Cough":1, "Flu":1, "Fever":2}
     patientid = request.json.get('patient_id', None)
-    patientname = request.json.get('patient_name', None)
-    numberofdays = request.json.get('numberofdays', None)
-   
+    patientname = request.json.get('name', None)
+    # numberofdays = request.json.get('numberofdays', None)
+    medicine = request.json.get('medicine', None)
+    numberofdays = 0
+    for med in medicine:
+        medicinename = med['medicineName']
+        for illness, value in listofillness.items():
+            if illness.lower() in medicinename.lower():
+                noofdays = listofillness[illness]
+                print(noofdays)
+            if noofdays>numberofdays:
+                numberofdays = noofdays
     # payment_status = request.json.get('payment_status', None) 
     if patientid == None or patientname == None or numberofdays == None:
           return jsonify(
@@ -56,7 +67,15 @@ def create_mc():
             "message": "missing data, please check again "
         }
         ), 201
-    mc_new = mc(patientid=patientid, patientname = patientname, numberofdays=numberofdays, assigned = 0)
+    if numberofdays != 0:
+        mc_new = mc(patientid=patientid, patientname = patientname, numberofdays=numberofdays, assigned = 0)
+    else:
+          return jsonify(
+            {
+                "code": 201,
+                "mc": "",
+            }
+        ), 201
     try:
         db.session.add(mc_new)
         db.session.commit()
@@ -70,7 +89,8 @@ def create_mc():
             {
                 "code": 500,
                 "message": "An error occurred creating the mc.",
-                "error": str(e)
+                "error": str(e),
+                "mc": mc_new.json()
             }
         ), 500
 

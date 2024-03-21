@@ -12,6 +12,8 @@ inventory_URL = "http://host.docker.internal:5002/inventory/"
 invoice_URL = "http://host.docker.internal:5007/invoice"
 MC_URL  = "http://host.docker.internal:500/MC"
 createCheckout_URL = "http://host.docker.internal:4242//create-checkout-session"
+account_URL = "http://host.docker.internal:5001/account"
+
 
 @app.route("/test")
 def test():
@@ -63,9 +65,13 @@ def processCreatePayment(invoice_details):
     print('stripe_payment_result:', stripe_payment_result)
     # 3. In payment successful - update invoice_payment_status
     UpdateInvoiceResult = invoke_http(invoice_URL, method='PUT', json="TBC")
-    
+    patient_ID = invoice["patient_id"]
+    patient_result = invoke_http(account_URL + "/" + str(patient_ID), method='GET')
+    name = patient_result['name']
+    invoice['name'] = name
+
     #4. create MC 
-    MC = invoke_http(MC_URL, method='POST', json=stripe_payment_result)
+    MC = invoke_http(MC_URL, method='POST', json=invoice)
 
 
 

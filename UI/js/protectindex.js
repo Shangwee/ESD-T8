@@ -1,6 +1,6 @@
 var accountURL = 'http://localhost:5001/account';
 
-const app = Vue.createApp({
+const protectIndex = Vue.createApp({
 
     methods:{
         checklogin(){
@@ -17,4 +17,4 @@ const app = Vue.createApp({
     }
 }); 
 
-app.mount('#protect');
+protectIndex.mount('#protect');

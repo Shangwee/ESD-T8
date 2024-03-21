@@ -108,26 +108,13 @@
 
     <!-- start of main content -->
     <main class="form-signin w-100 m-auto">
-    <div id="login">
-        <img class="mb-4" src="../images/logo-no-background.png" alt="" width="50%" height="50%">
-        <h1 class="h3 mb-3 fw-normal">Login</h1>
-
-        <div class="form-floating">
-          <input type="email" class="form-control" id="floatingInput"  v-model="email" placeholder="name@example.com">
-          <label for="floatingInput">Email address</label>
-        </div>
-        <div class="form-floating">
-          <input type="password" class="form-control" id="floatingPassword" v-model="password" placeholder="Password">
-          <label for="floatingPassword">Password</label>
-        </div>
-
-        <button class="btn btn-primary w-100 py-2" type="submit" @click="login()">Sign in</button>
-      </div> 
+      <div id="signout">
+      </div>
     </main>
     <!-- end of main content -->
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous" ></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.2/dist/chart.umd.js" integrity="sha384-eI7PSr3L1XLISH8JdDII5YN/njoSsxfbrkCTnJrzXt+ENP5MOVBxD+l6sEG4zoLp" crossorigin="anonymous"></script>  
-    <script src="../js/signin.js"></script>
+    <script src="../js/signout.js"></script>
   </body>
 </html>
