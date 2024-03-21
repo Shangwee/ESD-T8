@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, redirect
 from flask_cors import CORS
 import os, sys
 from invokes import invoke_http
@@ -14,7 +14,6 @@ MC_URL  = "http://host.docker.internal:500/MC"
 createCheckout_URL = "http://host.docker.internal:4242//create-checkout-session"
 account_URL = "http://host.docker.internal:5001/account"
 
-
 @app.route("/test")
 def test():
     return "hello world"
@@ -29,9 +28,21 @@ def create_payment():
 
             # do the actual work
             # 1. Invoice object (details) will be sent here from UI
-            result = processCreatePayment(invoice_details)
+            result = processPostPayment(invoice_details)
             return jsonify(result), result["code"]
         
+            ######################################################################################
+        
+            # invoice = json.dumps(invoice_details)
+            # stripe_payment_result = invoke_http(createCheckout_URL, method='POST', json=invoice)
+            # checkout_url = stripe_payment_result['url']
+
+            # return {'url' : checkout_url}
+
+            ########################################################################################
+
+
+
         except Exception as e:
             # print("hello")
             # Unexpected error in code
@@ -51,20 +62,32 @@ def create_payment():
     }), 400
 
 
-def processCreatePayment(invoice_details):
+def processPostPayment(invoice_details):
 
-    # 2. Disect info and send to Stripe API
+    print("postpost: ", invoice_details)
 
-    print('\n-----Sending info to Stripe API to handle payment-----')
+    print('\n-----Invoking invoice microservice to update payment status-----')
+    invoice_id = invoice_details['invoice_id']
+
+    status = {"payment_status" : 1}
+    invoice_update_status = invoke_http(invoice_URL + '/' + str(invoice_id), method='PUT', json=status)
+    print('invoice_update_status:', invoice_update_status)
+
+    code = invoice_update_status['code']
+    if code not in range(200, 300):
+        return {
+            code: 500,
+            "message": "Error updating invoice payment status"
+        }
+
     
+    #4. create MC 
+    MC = invoke_http(MC_URL, method='POST', json=invoice_details)
+
     #convert to JSON object
     invoice = json.dumps(invoice_details)
     print(invoice + "this is working")
-    abc = {"invoice_id": 3, "medicine": [{"medicineID": 1, "medicineName": "CoughMedicine 2", "price": 20.0, "quantity": 5}, { "medicineID": 1, "medicineName": "CoughMedicine 2",  "price": 20.0, "quantity": 5}, { "medicineID": 1, "medicineName": "CoughMedicine 2",  "price": 20.0, "quantity": 5}], "patient_id": 2, "payment_status": 0, "total_price": 10000000}
-    stripe_payment_result = invoke_http(createCheckout_URL, method='POST', json=abc)
-    print('stripe_payment_result:', stripe_payment_result)
-    # 3. In payment successful - update invoice_payment_status
-    UpdateInvoiceResult = invoke_http(invoice_URL, method='PUT', json="TBC")
+
     patient_ID = invoice["patient_id"]
     patient_result = invoke_http(account_URL + "/" + str(patient_ID), method='GET')
     name = patient_result['name']
@@ -74,14 +97,12 @@ def processCreatePayment(invoice_details):
     MC = invoke_http(MC_URL, method='POST', json=invoice)
 
 
-
-
-    # return {
-    #     "code": 201,
-    #     "data": {
-    #         "update_prescription_process": update_prescription_process,
-    #     }
-    # }
+    return {
+        "code": 201,
+        "data": {
+            "message": "payment status updated & MC created",
+        }
+    }
 
     # return "processsing prescription..... " + str(id) 
 
