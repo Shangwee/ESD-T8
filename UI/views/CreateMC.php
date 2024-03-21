@@ -23,8 +23,8 @@
 
   <body>
     <!-- SVG icon for the navbar -->
-    <div id="protect">
-    </div>
+    <!-- <div id="protect">
+    </div> -->
     <?php 
     require_once("./common/svg.php"); 
     require_once("./common/navbar.php");
@@ -73,7 +73,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.2/dist/chart.umd.js" integrity="sha384-eI7PSr3L1XLISH8JdDII5YN/njoSsxfbrkCTnJrzXt+ENP5MOVBxD+l6sEG4zoLp" crossorigin="anonymous"></script>
     <script>
 
-      url = "http://localhost:5008/mc/retrievalofsinglerecord/1"
+      url = "http://localhost:5008/mc/retrievalofsinglerecord/2"
      
       axios.get(url)
         .then(response => {

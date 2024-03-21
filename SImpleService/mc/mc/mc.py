@@ -73,7 +73,7 @@ def create_mc():
           return jsonify(
             {
                 "code": 201,
-                "mc": numberofdays,
+                "mc": "",
             }
         ), 201
     try:
