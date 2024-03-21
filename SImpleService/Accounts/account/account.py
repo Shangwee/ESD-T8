@@ -121,7 +121,7 @@ def update_allergies():
         }
     ), 201
 
-@app.route("/login", methods=['POST'])
+@app.route("/account/login", methods=['POST'])
 def login():
 
     data = request.get_json()
