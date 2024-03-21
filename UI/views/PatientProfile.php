@@ -48,42 +48,55 @@
               <div class="card">
                 <div class="card-body">
                   <h5 class="card-title">User Information</h5>
-                  <p class="card-text"><strong>Name:</strong> John Doe</p>
-                  <p class="card-text"><strong>Email:</strong> johndoe@example.com</p>
-                  <p class="card-text"><strong>Phone:</strong> 123-456-7890</p>
-                  <p class="card-text"><strong>Address:</strong> 123 Main St, City, Country</p>
-                  <a href="#" class="btn btn-primary">Edit Profile</a>
+                  <p class="card-text"><strong>Patient ID:</strong> {{patientID}}</p>
+                  <p class="card-text"><strong>Name:</strong> {{name}}</p>
+                  <p class="card-text"><strong>Email:</strong> {{email}}</p>
                 </div>
               </div>
-              <div class="mt-4">
+              <div v-if="allergies.length > 0"class="mt-4">
+                <h3>Allergies</h3>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">MedicineID</th>
+                      <th scope="col">Name</th>
+                      <th scope="col">Alternative Med ID</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="(item, index) in allergies">
+                      <th scope="row">{{item.id}}</th>
+                      <td>{{item.name}}</td>
+                      <td>
+                        <ul>
+                          <li v-for="(alt, index) in item.alternative">{{alt}}</li>
+                        </ul>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div v-if="prescriptions.length > 0" class="mt-4">
                 <h3>Prescriptions</h3>
                 <table class="table">
                   <thead>
                     <tr>
                       <th scope="col">Prescription ID</th>
-                      <th scope="col">Medication</th>
-                      <th scope="col">Dosage</th>
-                      <th scope="col">Instructions</th>
+                      <th scope="col">Doctors ID</th>
+                      <th scope="col">Medicines</th>
+                      <th scope="col">Process By Pharmacist</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <th scope="row">1</th>
-                      <td>Medication A</td>
-                      <td>1 pill per day</td>
-                      <td>Take with food</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">2</th>
-                      <td>Medication B</td>
-                      <td>2 pills per day</td>
-                      <td>Take in the morning</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">3</th>
-                      <td>Medication C</td>
-                      <td>1 pill per day</td>
-                      <td>Take before bedtime</td>
+                    <tr v-for = "(item, index) in prescriptions">
+                      <th scope="row">{{item.prescriptionID}}</th>
+                      <td>{{item.doctorID}}</td>
+                      <td>
+                        <ul>
+                          <li v-for="(med, index) in item.medicine">Name: {{med.medicineName}}, Qty: {{med.quantity}}</li>
+                        </ul>
+                      </td>
+                      <td>{{item.process}}</td></td>
                     </tr>
                   </tbody>
                 </table>

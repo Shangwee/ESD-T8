@@ -1,4 +1,4 @@
-var accountURL = 'http://localhost:5001/account/';
+var accountURL = 'http://localhost:5001/account';
 var InventoryURL = 'http://localhost:5002/inventory';
 var createPresscriptionURL = 'http://localhost:6003/create_prescription';
 
@@ -23,6 +23,8 @@ const app = Vue.createApp({
             let account = JSON.parse(sessionStorage.getItem('account'));
             if (account == null && account.role != 0) {
                 window.location.href = '../index.php';
+            } else {
+                this.doctorID = account.id;
             }
         },
 
@@ -74,7 +76,7 @@ const app = Vue.createApp({
         getallergicTo(){
             if (this.patientID != '') {
                 let id = this.patientID.toString();
-                axios.get(accountURL +id ).then((response) => {
+                axios.get(accountURL + "/" +id ).then((response) => {
                 this.patientName = response.data.data.name;
                 let allergicList = response.data.data.allergies;
                 // get inventory 

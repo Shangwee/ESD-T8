@@ -20,9 +20,8 @@ const app = Vue.createApp({
             });
         },
         displayProfile(id){
-            // set session storage
-            sessionStorage.setItem('patientID', id);
-            window.location.href = '../views/PatientProfile.php';
+            // set patient ID in the params of the URL
+            window.location.href = '../views/PatientProfile.php?patientID=' + id;
         }
     },
 

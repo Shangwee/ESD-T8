@@ -70,7 +70,7 @@
           </div>
             <div class="mb-3">
               <label for="doctorID" class="form-label">Doctor ID</label>
-              <input required type="number" class="form-control" id="doctorID" v-model="doctorID" placeholder="Enter Doctor's ID" value="1" min="1" max="3">
+              <input readonly type="number" class="form-control" id="doctorID" v-model="doctorID" placeholder="Enter Doctor's ID" value="1" min="1" max="3">
             </div>
             <div class="mb-3">
               <div v-if="patientID <= 3 && Number.isInteger(patientID)">
