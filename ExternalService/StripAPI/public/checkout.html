@@ -297,7 +297,7 @@
 
                     <input type="hidden" id="invoice_id" v-bind:value="invoice.invoice_id">
                     <input type="hidden" id="total_price" v-bind:value="invoice.total_price">
-                    <button type="submit" v-on:click="createCheckout()">Make Payment</button>
+                    <button type="submit" v-on:click="createCheckout()" v-bind:data-invoice="JSON.stringify(invoice)">Make Payment</button>
                     <button type="submit" id="invoice_detail" v-on:click="test" v-bind:data-invoice="JSON.stringify(invoice)">Send invoice to complex microservice</button>
 
                 </div>

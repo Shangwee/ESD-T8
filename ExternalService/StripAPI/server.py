@@ -1,6 +1,7 @@
 import os
-from flask import Flask, redirect, request, jsonify
+from flask import Flask, redirect, request, jsonify, json
 from flask_cors import CORS
+from urllib.parse import quote_plus
 
 import stripe
 
@@ -23,13 +24,22 @@ def test():
 def create_checkout_session():
     print("it is coming inDO?")
     try:
-        if request.json:
-            data = request.json
+        if request.is_json:
+            data = request.get_json()
             print(data)
             invoice_id = data['invoice_id']
-            print(f"this is invoice_id {invoice_id}")
             total_price = data['total_price']
-            print(f"this is total price {total_price}")
+            print(invoice_id)
+            print(total_price)
+
+            # process_data = json.loads(data)
+
+            # print("Data received: ", data)
+            # print("-------------")
+
+            json_str = json.dumps(data)
+            encoded_json_str = quote_plus(json_str)
+
 
             checkout_session = stripe.checkout.Session.create(
                 line_items=[
@@ -38,16 +48,29 @@ def create_checkout_session():
                             'currency': "SGD",
                             'unit_amount': int(total_price),
                             'product_data': {
-                                'name': f'Invoice No. : {invoice_id}',
+                                'name': f'Invoice No. : {int(invoice_id)}',
                             }
                         },
                         'quantity': 1
                     },
                 ],
                 mode='payment',
-                success_url=YOUR_DOMAIN + '/success.html',
-                cancel_url=YOUR_DOMAIN + '/checkout.html',
+
+                success_url=f'http://localhost:4242/checkout.html?status={encoded_json_str}'
+                # success_url=YOUR_DOMAIN + '/success.html',
+                # cancel_url=YOUR_DOMAIN + '/checkout.html',
             )
+
+            # change back to JSON
+            # print("CHECK JSON")
+            # print(checkout_session.url)
+
+            # return jsonify({
+            #     "code": 303,
+            #     "url": checkout_session.url
+            # })
+
+
         else:
             print("this is not working")
 
@@ -56,9 +79,10 @@ def create_checkout_session():
     except Exception as e:
         return str(e)
     
+
     return {'url': checkout_session.url, "code": 303}
 
     # return redirect(checkout_session.url, code=303)
 
 if __name__ == '__main__':
-    app.run(port=4242)
+    app.run(port=4242, debug=True)
