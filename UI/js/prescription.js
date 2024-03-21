@@ -1,4 +1,4 @@
-var accountURL = 'http://localhost:5001/account/';
+var accountURL = 'http://localhost:5001/account';
 var InventoryURL = 'http://localhost:5002/inventory';
 var createPresscriptionURL = 'http://localhost:6003/create_prescription';
 
@@ -18,6 +18,16 @@ const app = Vue.createApp({
     },
 
     methods:{
+        checkloginDoctor(){
+            // check if the user is logged in
+            let account = JSON.parse(sessionStorage.getItem('account'));
+            if (account == null && account.role != 0) {
+                window.location.href = '../index.php';
+            } else {
+                this.doctorID = account.id;
+            }
+        },
+
         addPrescription(medicineID, medicineName){
             // check if the medicine is already in the prescription
             for (let i = 0; i < this.prescriptions.length; i++) {
@@ -34,8 +44,13 @@ const app = Vue.createApp({
             });
         },
 
-        removePrescription(index){
-            this.prescriptions.splice(index, 1);
+        removePrescription(medicineID){
+            for (let i = 0; i < this.prescriptions.length; i++) {
+                if (this.prescriptions[i].medicineID === medicineID) {
+                    this.prescriptions.splice(i, 1);
+                    return;
+                }
+            }
         },
 
         displayAvailableInventoy(){
@@ -61,7 +76,7 @@ const app = Vue.createApp({
         getallergicTo(){
             if (this.patientID != '') {
                 let id = this.patientID.toString();
-                axios.get(accountURL +id ).then((response) => {
+                axios.get(accountURL + "/" +id ).then((response) => {
                 this.patientName = response.data.data.name;
                 let allergicList = response.data.data.allergies;
                 // get inventory 
@@ -84,7 +99,7 @@ const app = Vue.createApp({
         },
 
         savePrescription(){
-            if(this.patientID <= 3 || this.doctorID >= 4 || this.prescriptions.length < 1){
+            if(this.patientID <= 3 || this.doctorID >= 4 || this.prescriptions.length < 1 || this.patientID == '' || this.doctorID == ''){
                 alert("Please fill all the fields properly.");
             } else {
                 let params = {
@@ -108,6 +123,7 @@ const app = Vue.createApp({
         }
     },
     created(){
+        this.checkloginDoctor();
         this.displayAvailableInventoy();
     }
 }); 

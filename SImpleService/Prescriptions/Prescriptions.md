@@ -56,3 +56,6 @@ added a new column 'process', this check if the prescription is being process ye
 
 v1.3
 added a new route for ```/prescription/checkallergy```   
+
+v1.4
+added new route ```/prescription/patientID ```
