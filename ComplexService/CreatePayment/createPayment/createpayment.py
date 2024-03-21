@@ -10,7 +10,7 @@ CORS(app)
 prescription_URL = "http://host.docker.internal:5004/prescription/"
 inventory_URL = "http://host.docker.internal:5002/inventory/"
 invoice_URL = "http://host.docker.internal:5007/invoice"
-MC_URL  = "http://host.docker.internal:500/MC"
+MC_URL  = "http://host.docker.internal:5008/MC"
 createCheckout_URL = "http://host.docker.internal:4242//create-checkout-session"
 account_URL = "http://host.docker.internal:5001/account"
 
