@@ -5,6 +5,8 @@ CREATE TABLE IF NOT EXISTS `mc` (
   `patientname` VARCHAR(255) NOT NULL,
   `patientid` INT NOT NULL,
   `numberofdays` int(11),
-  `assigned` int(11)
+  `assigned` int(11),
+   `date` DATE,
+  `newdate` DATE
 
 );

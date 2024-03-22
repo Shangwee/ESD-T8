@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import func
 from flask_cors import CORS
+from datetime import datetime, timedelta
 
 from os import environ
 
@@ -25,18 +26,23 @@ class mc(db.Model):
     patientname = db.Column(db.String(64), nullable=False)
     numberofdays = db.Column(db.Integer, nullable=False)
     assigned = db.Column(db.Integer(), nullable=False)
+    date = db.Column(db.Date)
+    newdate = db.Column(db.Date)
 
     # total_price = db.Column(db.Float(precision=2), nullable=False)
     # payment_status = db.Column(db.Integer, nullable=False)
 
-    def __init__(self, patientname, numberofdays, patientid, assigned):
+    def __init__(self, patientname, numberofdays, patientid, assigned, date, newdate):
         self.patientid = patientid
         self.patientname = patientname
         self.numberofdays = numberofdays
         self.assigned = assigned
+        self.date = date
+        self.newdate = newdate
+
 
     def json(self):
-        return {"mcid": self.mcid,"patientid":self.patientid, "patientname": self.patientname, "numberofdays": self.numberofdays, "assigned": self.assigned}
+        return {"mcid": self.mcid,"patientid":self.patientid, "patientname": self.patientname, "numberofdays": self.numberofdays, "assigned": self.assigned, "date":self.date, "newdate":self.newdate}
 
 
 @app.route("/mc/create_mc", methods=['POST'])
@@ -68,7 +74,9 @@ def create_mc():
         }
         ), 201
     if numberofdays != 0:
-        mc_new = mc(patientid=patientid, patientname = patientname, numberofdays=numberofdays, assigned = 0)
+        today = datetime.utcnow().date()
+        newdate = today+timedelta(days=numberofdays)
+        mc_new = mc(patientid=patientid, patientname = patientname, numberofdays=numberofdays, assigned = 0,date=today,newdate=newdate)
     else:
           return jsonify(
             {
@@ -137,6 +145,30 @@ def get_mc_record(patient_id):
             "message": "There is no mc.",
         }
     ), 404
+
+@app.route("/mc/retrieveonpatientid/<int:patient_id>")
+def getMCrecs(patient_id):
+    mc_record = db.select(mc).where(mc.patientid == patient_id)
+    mclist = db.session.scalars(mc_record).all()
+    if len(mclist):
+        for record in mclist:
+            record.assigned = 1
+        db.session.commit()
+        return jsonify(
+            {
+                "code": 200,
+                "data": {
+                    "mc": [mc.json() for mc in mclist]
+                }
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "There is no mc.",
+        }
+    ), 404
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
