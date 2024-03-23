@@ -19,13 +19,18 @@
     <!-- Custom styles for this template -->
     <!-- <link href="../css/dashboard.css" rel="stylesheet" />
     <link href="../css/common.css" rel="stylesheet" /> -->
+    <style>
+        .cusborder{
+          border: 3px solid #2d5db1;
+        }
+    </style>
   </head>
 
   <body>
     <!-- SVG icon for the navbar -->
     <!-- <div id="protect">
     </div> -->
-    <div class="p-5 mb-4 bg-primary rounded-3">
+    <div class=" p-5 mb-4 rounded-3" style="background-color:#2d5db1;">
     <?php 
         require_once("./common/patientnav.php");
     ?>
@@ -44,43 +49,49 @@
     </div>
 </div>
 <div class="container my-5">
-  <div class="row">
+  <div class="row g-3">
     <!-- Card 1 -->
     <div class="col-md-4">
-      <div class="card">
+      <div class="card p-3 rounded shadow">
         <div class="card-body text-center">
           <div class="card-title">
             <img src="path_to_icon" alt="" class="mb-4">
             <h5>True Care</h5>
           </div>
-          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec odio. Quisque volutpat mattis eros.</p>
-          <a href="#" class="btn btn-primary">Learn More</a>
+          <p class="card-text">We have professional doctors that can cater to you 24/7. Just come online and we can find you the best doctor in the world.</p>
+          <a href="#" class="btn rounded-pill cusborder">Learn More</a>
+          <p></p>
+          <p></p>
         </div>
       </div>
     </div>
     <!-- Card 2 -->
     <div class="col-md-4">
-      <div class="card">
+      <div class="card p-3 rounded shadow" >
         <div class="card-body text-center">
           <div class="card-title">
             <img src="path_to_icon" alt="" class="mb-4">
             <h5>Experienced Personnel</h5>
           </div>
-          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec odio. Quisque volutpat mattis eros.</p>
-          <a href="#" class="btn btn-primary">Learn More</a>
+          <p class="card-text">Our doctor have credited certifications from renowned instituitions and have a bag of experience under their belt.  </p>
+          <a href="#" class="btn  rounded-pill cusborder">Learn More</a>
+          <p></p>
+          <p></p>
         </div>
       </div>
     </div>
     <!-- Card 3 -->
     <div class="col-md-4">
-      <div class="card">
+      <div class="card p-3 rounded shadow">
         <div class="card-body text-center">
           <div class="card-title">
             <img src="path_to_icon" alt="" class="mb-4">
             <h5>Available 24/7</h5>
           </div>
-          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec odio. Quisque volutpat mattis eros.</p>
-          <a href="#" class="btn btn-primary">Learn More</a>
+          <p class="card-text">We are available any time of the day. Just visit our website at www.mediheal.com and you will experience quality service.</p>
+          <a href="#" class="btn rounded-pill cusborder">Learn More</a>
+          <p></p>
+          <p></p>
         </div>
       </div>
     </div>

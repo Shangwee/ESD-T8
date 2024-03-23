@@ -1,6 +1,6 @@
 <?php
     echo "
-    <header class='navbar sticky-top bg-primary flex-md-nowrap p-0' data-bs-theme='dark'>
+    <header class='navbar sticky-top flex-md-nowrap p-0' data-bs-theme='dark' style='background-color:#2d5db1;'>
         <div class='container-fluid d-flex justify-content-center'>
             <ul class='navbar-nav flex-row'>
                 <li class='nav-item'>
