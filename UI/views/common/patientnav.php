@@ -12,6 +12,9 @@
                 <li class='nav-item'>
                     <a class='nav-link fs-6 text-white' href='#'>Invoice &nbsp; &nbsp;</a>
                 </li>
+                <li class='nav-item'>
+                    <a class='nav-link fs-6 text-white' href='../sign-out.php'>Sign Out &nbsp; &nbsp;</a>
+                </li>
             </ul>
         </div>
     </header>

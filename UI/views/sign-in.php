@@ -122,6 +122,11 @@
         </div>
 
         <button class="btn btn-primary w-100 py-2" type="submit" @click="login()">Sign in</button>
+
+        <!-- show wrong password -->
+        <div v-if="wrong" class="alert alert-danger mt-3" role="alert">
+          {{error}}
+        </div>
       </div> 
     </main>
     <!-- end of main content -->

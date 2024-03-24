@@ -59,3 +59,6 @@ added a new route for ```/prescription/checkallergy```
 
 v1.4
 added new route ```/prescription/patientID ```
+
+v1.5
+added new route ```/prescription/doctorID ```

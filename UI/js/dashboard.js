@@ -1,49 +1,41 @@
-/* globals Chart:false */
+var accountURL = 'http://localhost:5001/account';
+var InventoryURL = 'http://localhost:5002/inventory';
+var PrescriptionURL = 'http://localhost:5004/prescription';
 
-(() => {
-  'use strict'
-
-  // Graphs
-  const ctx = document.getElementById('myChart')
-  // eslint-disable-next-line no-unused-vars
-  const myChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: [
-        'Sunday',
-        'Monday',
-        'Tuesday',
-        'Wednesday',
-        'Thursday',
-        'Friday',
-        'Saturday'
-      ],
-      datasets: [{
-        data: [
-          15339,
-          21345,
-          18483,
-          24003,
-          23489,
-          24092,
-          12034
-        ],
-        lineTension: 0,
-        backgroundColor: 'transparent',
-        borderColor: '#007bff',
-        borderWidth: 4,
-        pointBackgroundColor: '#007bff'
-      }]
-    },
-    options: {
-      plugins: {
-        legend: {
-          display: false
-        },
-        tooltip: {
-          boxPadding: 3
+const app = Vue.createApp({
+    data() {
+        return {
+            doctorID : '',
+            name : '',
+            prescriptions : [],
+            role: 0
         }
-      }
+    },
+
+    methods:{
+        displayPrescription(){
+            // get account from session storage
+            let account = JSON.parse(sessionStorage.getItem('account'));
+            this.doctorID = account.id;
+            this.name = account.name;
+            this.getPrescription(this.doctorID);
+            
+        },
+
+        getPrescription(ID){
+            axios.get(PrescriptionURL + '/doctor/' + ID).then((response) => {
+                var prescription = response.data.data;
+                for (i in prescription){
+                    this.prescriptions.push(prescription[i]);
+                }
+            });
+        }
+    
+    },
+
+    created(){
+        this.displayPrescription();
     }
-  })
-})()
+}); 
+
+app.mount('#index');

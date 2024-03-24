@@ -93,7 +93,7 @@
                       <td>{{item.doctorID}}</td>
                       <td>
                         <ul>
-                          <li v-for="(med, index) in item.medicine">Name: {{med.medicineName}}, Qty: {{med.quantity}}</li>
+                          <li v-for="(med, index) in item.medicine">Name: "{{med.medicineName}}" Qty: {{med.quantity}}</li>
                         </ul>
                       </td>
                       <td>{{item.process}}</td></td>

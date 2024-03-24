@@ -138,6 +138,25 @@ def get_by_patientID(patient_id):
         }
     ), 404
 
+@app.route("/prescription/doctor/<int:doctor_id>")
+def get_by_doctorID(doctor_id):
+    prescription_list_by_doctor = db.session.scalars(
+        db.select(Prescription).filter_by(doctorID = int(doctor_id))
+    ).all()
+    if len(prescription_list_by_doctor):
+        return jsonify(
+            {
+                "code": 200,
+                "data": [prescription.json() for prescription in prescription_list_by_doctor]
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "Prescription not found.",
+        }
+    ), 404
+
 @app.route('/prescription/<int:prescriptionID>', methods=['PUT'])
 def update_prescription(prescriptionID):
     data = request.get_json()

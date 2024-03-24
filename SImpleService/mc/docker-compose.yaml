@@ -6,7 +6,7 @@ services:
 # mc: The mc microservice
 #################################
 
-  invoice:
+  mc:
     build:
       context: ./mc
       dockerfile: Dockerfile

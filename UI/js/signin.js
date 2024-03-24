@@ -5,6 +5,8 @@ const app = Vue.createApp({
         return {
             email: '',
             password: '',
+            wrong: false,
+            error: '',
         }
     },
 
@@ -28,10 +30,17 @@ const app = Vue.createApp({
                 // add it into the session storage
                 sessionStorage.setItem('account', JSON.stringify(account));
                 // redirect to the dashboard
-                window.location.href = '../index.php';
+                // check if it is patient or doctor
+                if (account.role == 0) {
+                    window.location.href = '../index.php';
+                } else {
+                    window.location.href = '../views/PatientFrontPage.php';
+                }
+                
             })
             .catch((error) => {
-                console.log(error);
+                this.wrong = true;
+                this.error = error.response.data.message;
             })
         },
 

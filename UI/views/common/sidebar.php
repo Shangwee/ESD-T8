@@ -26,6 +26,14 @@
                             Prescriptions
                         </a>
                     </li>
+                        <a class='nav-link d-flex align-items-center gap-2' href='./Pharmacist.php'>
+                            <svg class='bi'>
+                                <use xlink:href='#list' />
+                            </svg>
+                            Dispenser
+                        </a>
+                    <li>
+                    </li>
                     <li class='nav-item'>
                         <a class='nav-link d-flex align-items-center gap-2' href='./Patients.php'>
                             <svg class='bi'>

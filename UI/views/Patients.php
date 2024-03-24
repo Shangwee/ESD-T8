@@ -44,9 +44,6 @@
               <h1 class="h2">Patients</h1>
             </div>
             <div class="container mt-5">
-              <div class="mb-3">
-                <input type="text" class="form-control" id="searchInput" placeholder="Search by patient name">
-              </div>
               <table class="table">
                 <thead>
                   <tr>
