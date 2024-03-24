@@ -4,16 +4,16 @@
         <div class='container-fluid d-flex justify-content-center'>
             <ul class='navbar-nav flex-row'>
                 <li class='nav-item'>
-                    <a class='nav-link me-3 fs-6 text-white' href='#'>Consultation &nbsp &nbsp;</a>
+                    <a class='nav-link me-3 fs-3 text-white' href='#'>Consultation &nbsp &nbsp;</a>
                 </li>
                 <li class='nav-item'>
-                    <a class='nav-link me-3 fs-6 text-white' href='#'>MC &nbsp; &nbsp;</a>
+                    <a class='nav-link me-3 fs-3 text-white' href='../views/ViewAllMC.php'>MC &nbsp; &nbsp;</a>
                 </li>
                 <li class='nav-item'>
-                    <a class='nav-link fs-6 text-white' href='#'>Invoice &nbsp; &nbsp;</a>
+                    <a class='nav-link fs-3 text-white' href='../../../ESD-T8/ExternalService/StripAPI/public/checkout.html'>Invoice &nbsp; &nbsp;</a>
                 </li>
                 <li class='nav-item'>
-                    <a class='nav-link fs-6 text-white' href='../sign-out.php'>Sign Out &nbsp; &nbsp;</a>
+                    <a class='nav-link fs-3 text-white' href='../sign-out.php'>Sign Out &nbsp; &nbsp;</a>
                 </li>
             </ul>
         </div>

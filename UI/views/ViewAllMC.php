@@ -98,13 +98,19 @@
             const app = Vue.createApp({
                 data() {
                     return {
-                        patiendid: 2,
+                        id: '',
                         listofMC: [],
                         
                     }
                 },
 
             methods: {
+              displayPatient(){
+                // get account from session storage
+                let account = JSON.parse(sessionStorage.getItem('account'));
+                this.id = account.id;
+                this.name = account.name;  
+              },
               getAllMC() {
                     const dateformat = (dateString) => {
                         const date = new Date(dateString);
@@ -114,7 +120,7 @@
                         return `${d}/${m}/${y}`;
                     };
 
-                    axios.get(MCURL + '/' + this.patiendid).then((response) => {
+                    axios.get(MCURL + '/' + this.id).then((response) => {
                         var allmc = response.data.data.mc;
                         
                         for (let mc of allmc) {
@@ -134,6 +140,7 @@
             }
         },
         created() {
+            this.displayPatient()
             this.getAllMC();
         }
             }); 
