@@ -10,7 +10,7 @@ CORS(app)
 prescription_URL = "http://host.docker.internal:5004/prescription/"
 inventory_URL = "http://host.docker.internal:5002/inventory/"
 invoice_URL = "http://host.docker.internal:5007/invoice"
-MC_URL  = "http://host.docker.internal:5008/MC"
+MC_URL  = "http://host.docker.internal:5008/mc/create_mc"
 createCheckout_URL = "http://host.docker.internal:4242//create-checkout-session"
 account_URL = "http://host.docker.internal:5001/account"
 
@@ -68,6 +68,9 @@ def processPostPayment(invoice_details):
 
     print('\n-----Invoking invoice microservice to update payment status-----')
     invoice_id = invoice_details['invoice_id']
+    patient_id = invoice_details['patient_id']
+    print("THIS IS INVOICE ID: ", invoice_id)
+    print("THIS IS PATIENT ID: ", patient_id)
 
     status = {"payment_status" : 1}
     invoice_update_status = invoke_http(invoice_URL + '/' + str(invoice_id), method='PUT', json=status)
@@ -79,22 +82,25 @@ def processPostPayment(invoice_details):
             code: 500,
             "message": "Error updating invoice payment status"
         }
-
     
-    #4. create MC 
-    MC = invoke_http(MC_URL, method='POST', json=invoice_details)
+    print("TESTING CODE")
+    print("AFTER TESTING CODE", invoice_details)
 
     #convert to JSON object
-    invoice = json.dumps(invoice_details)
-    print(invoice + "this is working")
+    # invoice = json.dumps(invoice_details)
 
-    patient_ID = invoice["patient_id"]
-    patient_result = invoke_http(account_URL + "/" + str(patient_ID), method='GET')
-    name = patient_result['name']
-    invoice['name'] = name
+    print('\n-----Invoking account microservice to get patient name-----')
+    patient_result = invoke_http(account_URL + "/" + str(patient_id), method='GET')
+    print("PATIENT_RESULT: ", patient_result)
+    name = patient_result['data']['name']
+    print("RETRIEVING NAME: ", name)
+    invoice_details['name'] = name
+    print('updated invoice with name: ', invoice_details)
 
     #4. create MC 
-    MC = invoke_http(MC_URL, method='POST', json=invoice)
+    print('\n-----Invoking MC microservice to create MC-----')
+    MC = invoke_http(MC_URL, method='POST', json=invoice_details)
+    print ('invoked MC: ', MC)
     cd = MC['code']
     if cd not in range(200, 300):
         return {
