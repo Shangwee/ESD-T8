@@ -1,6 +1,6 @@
 var createCheckout = 'http://localhost:4242/create-checkout-session';
 var createPayment_URL = 'http://localhost:6002/createpayment';
-var invoice_url = 'http://localhost:5007/invoice/2';
+var invoice_url = 'http://localhost:5007/invoice';
 
 
 function clearQueryVariable(variable) {
@@ -33,11 +33,21 @@ const app = Vue.createApp({
             invoices: [],
             total_price: 0,
             chosen_invoice: '',
-            display: false
+            id: '',
+            name: ''
         }
     },
 
     methods:{
+        displayPatient(){
+            // get account from session storage
+            let account = JSON.parse(sessionStorage.getItem('account'));
+            this.id = account.id;
+            this.name = account.name;
+            console.log("id is: ", this.id)
+            console.log("name is: ", this.name)
+        },
+
         getInvoice(){
             // var testing =
             //     [
@@ -50,7 +60,7 @@ const app = Vue.createApp({
 
 
             // will need to change to Get Patient ID from UI later on
-            axios.get(invoice_url)
+            axios.get(invoice_url + '/' + this.id)
                 .then(response => {
                     console.log("successful retrieval")
                     console.log(response.data)
@@ -65,7 +75,6 @@ const app = Vue.createApp({
                     console.log("failed to retrieve invoice from DB")
                     console.log(error)
                 })
-
 
         },
 
@@ -111,44 +120,6 @@ const app = Vue.createApp({
                 });
         },
 
-        test(event) {
-            /* send to createpayment complex microservice*/
-            const invoice = JSON.parse(event.target.dataset.invoice);
-
-            fetch(createPayment_URL,
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-type": "application/json"
-                    },
-                    body: JSON.stringify(invoice)
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data)
-                console.log("sent over to createpayment complex successfully")
-                if(data.url) {
-                    window.location.href = data.url;
-                } else {
-                    console.log("Failed to get checkout URL")
-                }
-
-                /* Check if stripe sends back payment status code "done" */
-                if (document.getElementById("status").value == "success") {
-                    document.getElementById("status").value = null
-
-                    params = {
-                        status : "done"
-                    }
-
-                    
-                }
-            })
-            .catch(error => {
-                console.log("There is some problem sending to complex. " + error)
-            })
-        },
-
         checkPaymentStatus() {
             const status = this.getQueryVariable('status');
             console.log("testing", status)
@@ -183,6 +154,7 @@ const app = Vue.createApp({
     },
 
     created(){
+        this.displayPatient();
         this.getInvoice();
         this.checkPaymentStatus();
     }

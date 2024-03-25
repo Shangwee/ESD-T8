@@ -2,11 +2,6 @@ var createCheckout = 'http://localhost:4242/create-checkout-session';
 var createPayment_URL = 'http://localhost:6002/createpayment';
 var invoice_url = 'http://localhost:5007/invoice/2';
 
-
-document.getElementById('backtoinvoice').addEventListener('click', function() {
-    window.location.href = 'http://localhost:4242/checkout.html';
-});
-
 function clearQueryVariable(variable) {
     var baseUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
     var newUrl = baseUrl;
@@ -35,10 +30,20 @@ const app = Vue.createApp({
     data() {
         return {
             invoices: [],
+            id: '',
+            name: ''
         }
     },
 
     methods:{
+        displayPatient(){
+            // get account from session storage
+            let account = JSON.parse(sessionStorage.getItem('account'));
+            this.id = account.id;
+            this.name = account.name;
+            console.log("id is: ", this.id)
+            console.log("name is: ", this.name)
+        },
 
         checkPaymentStatus() {
             const status = this.getQueryVariable('status');
@@ -51,6 +56,7 @@ const app = Vue.createApp({
                 axios.post(createPayment_URL, process_status)
                 .then(response => {
                     console.log(response.data)
+                    clearQueryVariable(status)
                 })
                 .catch(error => {
                     console.log(error)
@@ -74,6 +80,7 @@ const app = Vue.createApp({
     },
 
     created(){
+        this.displayPatient();
         this.checkPaymentStatus();
     }
 

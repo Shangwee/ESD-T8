@@ -34,7 +34,7 @@ const app = Vue.createApp({
                 if (account.role == 0) {
                     window.location.href = '../index.php';
                 } else {
-                    window.location.href = '../views/PatientFrontPage.php';
+                    window.location.href = '../PatientFrontPage.php';
                 }
                 
             })

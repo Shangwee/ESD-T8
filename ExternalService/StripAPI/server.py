@@ -56,7 +56,8 @@ def create_checkout_session():
                 ],
                 mode='payment',
 
-                success_url=f'http://localhost:4242/success.html?status={encoded_json_str}'
+                success_url=f'http://localhost:8080/ESD/ESD-T8/UI/views/success.php?status={encoded_json_str}'
+                # success_url=f'http://localhost:4242/success.php?status={encoded_json_str}'
                 # success_url=f'http://localhost:4242/checkout.html?status={encoded_json_str}'
                 # success_url=YOUR_DOMAIN + '/success.html',
                 # cancel_url=YOUR_DOMAIN + '/checkout.html',
