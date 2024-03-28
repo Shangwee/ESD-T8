@@ -1,7 +1,7 @@
 -- Assuming the database doesn't exist
-CREATE DATABASE IF NOT EXISTS AccountDB;
+CREATE DATABASE IF NOT EXISTS accountdb;
 
-USE AccountDB;  -- Switch to the newly created database
+USE accountdb;  -- Switch to the newly created database
 
 -- Create the table schema
 CREATE TABLE IF NOT EXISTS account (
