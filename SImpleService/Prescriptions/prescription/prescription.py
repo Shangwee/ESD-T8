@@ -172,7 +172,10 @@ def update_prescription(prescriptionID):
             return jsonify(
                 {
                     "code": 500,
-                    "data": data,
+                    "data": {
+                        "prescriptionID": prescriptionID
+                    
+                    },
                     "message": "An error occurred updating the prescription."
                 }
             ), 500

@@ -59,6 +59,7 @@ def processCreatePrescription(prescription):
       }
       # convert to json
       checkdata = json.dumps(checkdata)
+      print ('checkdata:', checkdata)
       print('\n-----Invoking prescription microservice-----')
       check_result = invoke_http(prescription_URL + "/checkallergy", method='POST', json=checkdata)
       print('check_result:', check_result)

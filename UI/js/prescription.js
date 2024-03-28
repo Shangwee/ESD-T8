@@ -13,7 +13,8 @@ const app = Vue.createApp({
             doctorID: '',
             allergicTo: [],
             patientName: '',
-            ispatient: ''
+            ispatient: '',
+            error : '',
         }
     },
 
@@ -74,6 +75,8 @@ const app = Vue.createApp({
         },
 
         getallergicTo(){
+            this.allergicTo = [];
+            this.error = '';
             if (this.patientID != '') {
                 let id = this.patientID.toString();
                 axios.get(accountURL + "/" +id ).then((response) => {
@@ -91,6 +94,11 @@ const app = Vue.createApp({
                         }
                     }
                 }
+                })
+                .catch((error) => {
+                    console.log(error.response.data.message);
+                    this.error = error.response.data.message;
+
                 });
             } else {
                 this.allergicTo = [];
