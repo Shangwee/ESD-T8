@@ -81,16 +81,22 @@ def processPrescription(id):
 
 
     # 5. Get medicine price
-    # Invoke the Inventory microservice
+    # Invoke the Inventory microservice get medicine price
     print('\n-----Invoking inventory microservice-----')
-    inventory_result = invoke_http(inventory_URL, method='POST', json=prescription_result)
-    print('inventory_result:', inventory_result)
+    inventory_result = invoke_http(inventory_URL + "/find_medicine_price", method='POST', json=prescription_result)
+    print('inventory_result find medicine price:', inventory_result)
 
     # 6. Create invoice
-    # Invoke the Invoice microservice
+    # Invoke the Invoice microservice get total price
     print('\n-----Invoking inventory microservice-----')
-    invoice_result = invoke_http(invoice_URL, method='POST', json=inventory_result)
-    print('inventory_result:', inventory_result)
+    invoice_result = invoke_http(invoice_URL + "/getTotalPrice", method='POST', json=inventory_result)
+    print('invoice_result Total price:', invoice_result)
+
+    # 7. create invoice
+    # create invoice base on the total price
+    print('\n-----Invoking invoice microservice-----')
+    create_invoice_result = invoke_http(invoice_URL, method='POST', json=invoice_result)
+    print('create_invoice_result:', create_invoice_result)
 
     return {
         "code": 201,

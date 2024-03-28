@@ -43,6 +43,14 @@
                         </a>
                     </li>
                     <li class='nav-item'>
+                        <a class='nav-link d-flex align-items-center gap-2' href='./Inventory.php'>
+                            <svg class='bi'>
+                                <use xlink:href='#circle-half' />
+                            </svg>
+                            Inventory
+                        </a>
+                    </li>
+                    <li class='nav-item'>
                         <a class='nav-link d-flex align-items-center gap-2' href='./sign-out.php'>
                             <svg class='bi'>
                                 <use xlink:href='#door-closed' />

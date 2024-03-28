@@ -73,11 +73,6 @@
               <input readonly type="number" class="form-control" id="doctorID" v-model="doctorID" placeholder="Enter Doctor's ID" value="1" min="1" max="3">
             </div>
             <div class="mb-3">
-              <label for="patientName" class="form-label
-              ">Patient Name</label>
-              <p>{{patientName}}</p>
-            </div>
-            <div class="mb-3">
               <div v-if="patientID <= 3 && Number.isInteger(patientID)">
                 <p style="color: red;">Not a Patient</p>
               </div>
@@ -86,6 +81,9 @@
               </div>
               <label for="patientID" class="form-label">Patient ID</label>
               <input required type="number" class="form-control" id="patientID" v-model="patientID" @keyup="getallergicTo()" placeholder="Enter Patient's ID" min="4">
+            </div>
+            <div v-if="patientName.length > 0">
+              <p>Patient Name: {{patientName}}</p>
             </div>
             <div v-if = "allergicTo.length > 0" >
                 <p>Allergies:</p>

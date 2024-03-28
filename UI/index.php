@@ -75,6 +75,14 @@
                     </a>
                   </li>
                   <li class='nav-item'>
+                        <a class='nav-link d-flex align-items-center gap-2' href='./views/Inventory.php'>
+                            <svg class='bi'>
+                                <use xlink:href='#circle-half' />
+                            </svg>
+                            Inventory
+                        </a>
+                    </li>
+                  <li class='nav-item'>
                       <a class='nav-link d-flex align-items-center gap-2' href='./views/sign-out-index.php'>
                           <svg class='bi'>
                               <use xlink:href='#door-closed' />
@@ -162,7 +170,7 @@
                     <div class="card-body">
                       <h5 class="card-title">Inventory</h5>
                       <p class="card-text">Manage medicine and information.</p>
-                      <a href="#" class="btn btn-primary">Go to Inventory</a>
+                      <a href="./views/Inventory.php" class="btn btn-primary">Go to Inventory</a>
                     </div>
                   </div>
                 </div>

@@ -10,3 +10,5 @@ services:
     image: mondo/process:1.0
     restart: always
     ports: [6001:5100]
+    environment:
+      PYTHONUNBUFFERED: 1
