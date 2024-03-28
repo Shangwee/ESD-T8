@@ -1,0 +1,45 @@
+version: "3.8"
+
+services:
+
+#################################
+# Create Payment: The Create Payment complex microservice
+#################################
+
+  createPayment:
+    build:
+      context: ./CreatePayment/createPayment
+      dockerfile: Dockerfile
+    image: ESDT8/createpayment:1.0
+    restart: always
+    ports:
+      - "6002:6002"
+    environment:
+      PYTHONUNBUFFERED: 1 
+
+#################################
+# CreatePrescription: The CreatePrescription service
+#################################
+
+  createPrescription:
+    build:
+      context: ./CreatePrescription/createprescription
+      dockerfile: Dockerfile
+    image: ESDT8/createprescription:1.0
+    restart: always
+    ports:
+      - "6003:6003"
+    environment:
+      PYTHONUNBUFFERED: 1 
+
+#################################
+# Process Prescription: The Process Prescription complex microservice
+#################################
+
+  processPrescription:
+    build: ./ProcessPrescription/process
+    image: ESDT8/processprescription:1.0
+    restart: always
+    ports: [6001:5100]
+    environment:
+      PYTHONUNBUFFERED: 1

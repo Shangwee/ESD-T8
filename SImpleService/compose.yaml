@@ -1,0 +1,152 @@
+version: "3.8"
+
+services:
+
+  # Simple microservice
+
+  #################################
+  # Account: The Account microservice
+  #################################
+
+  account:
+    build: ./Accounts/account
+    image: ESDT8/account:1.0
+    # container_name: account_microservice
+    restart: always
+    ports: [ 5001:5000 ]
+    depends_on:
+      - account_db
+    environment:
+      dbURL: mysql+mysqlconnector://root@host.docker.internal:3301/accountdb
+
+  #################################
+  # Account SQL Database
+  #################################
+  account_db:
+    image: mysql:latest
+    restart: always
+    ports: [ 3301:3306 ]
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: yes
+    volumes:
+      - ./Accounts/db/account.sql:/docker-entrypoint-initdb.d/init.sql
+
+  #################################
+  # inventory: The inventory microservice
+  #################################
+
+  inventory:
+    build:
+      context: ./Inventory/inventory
+      dockerfile: Dockerfile
+    image: ESDT8/inventory:1.1
+    restart: always
+    ports:
+      - "5002:5000"
+    environment:
+      dbURL: mysql+mysqlconnector://root@host.docker.internal:3302/inventory
+
+  #################################
+  # inventory SQL Database
+  #################################
+
+  inventory_db:
+    image: mysql:latest
+    restart: always
+    ports:
+      - "3302:3306"
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: yes
+      MYSQL_DATABASE: inventory
+    volumes:
+      - ./Inventory/db/inventory.sql:/docker-entrypoint-initdb.d/init.sql
+
+  #################################
+  # invoice: The invoice microservice
+  #################################
+
+  invoice:
+    build:
+      context: ./Invoice/invoice
+      dockerfile: Dockerfile
+    image: ESDT8/invoice:1.0
+    restart: always
+    ports:
+      - "5007:5000"
+    environment:
+      dbURL: mysql+mysqlconnector://root@host.docker.internal:3307/invoice
+
+  #################################
+  # invoice SQL Database
+  #################################
+
+  invoice_db:
+    image: mysql:latest
+    restart: always
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: yes
+      MYSQL_DATABASE: invoice
+    volumes:
+      - ./Invoice/db/invoice.sql:/docker-entrypoint-initdb.d/init.sql
+
+  #################################
+  # mc: The mc microservice
+  #################################
+
+  mc:
+    build:
+      context: ./mc/mc
+      dockerfile: Dockerfile
+    image: ESDT8/mc:1.0
+    restart: always
+    ports:
+      - "5008:5000"
+    environment:
+      dbURL: mysql+mysqlconnector://root@host.docker.internal:3308/mc
+
+  #################################
+  # mc SQL Database
+  #################################
+
+  mc_db:
+    image: mysql:latest
+    restart: always
+    ports:
+      - "3308:3306"
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: yes
+      MYSQL_DATABASE: mc
+    volumes:
+      - ./mc/db/mc.sql:/docker-entrypoint-initdb.d/init.sql
+
+  #################################
+  # prescription: The prescription microservice
+  #################################
+
+  prescription:
+    build:
+      context: ./Prescriptions/prescription
+      dockerfile: Dockerfile
+    image: ESDT8/prescription:1.5
+    restart: always
+    ports:
+      - "5004:5000"
+    environment:
+      dbURL: mysql+mysqlconnector://root@host.docker.internal:3304/prescription
+
+  #################################
+  # prescription SQL Database
+  #################################
+
+  prescription_db:
+    image: mysql:latest
+    restart: always
+    ports:
+      - "3304:3306"
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: yes
+      MYSQL_DATABASE: prescription
+    volumes:
+      - ./Prescriptions/db/prescription.sql:/docker-entrypoint-initdb.d/init.sql
